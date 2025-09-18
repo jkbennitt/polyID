@@ -3,14 +3,15 @@ name: Sync to Hugging Face Spaces
 on:
   push:
     branches:
-      - master
+      - main
+  workflow_dispatch:
 
 jobs:
   sync-to-hf:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Push to HF Spaces
         uses: huggingface_hub_action@main
         with:
