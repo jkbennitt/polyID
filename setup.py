@@ -34,7 +34,8 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=find_packages(exclude=["docs", "tests"]),  # Required
+    packages=find_packages(where="src", exclude=["docs", "tests"]),  # Required
+    package_dir={"": "src"},
     project_urls={
         "Source": "https://github.com/NREL/polyid",
     },

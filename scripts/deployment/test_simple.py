@@ -94,11 +94,11 @@ if __name__ == "__main__":
     try:
         parsed = json.loads(result)
         if "polymer_id" in parsed and "smiles" in parsed and "properties" in parsed:
-            print("✓ Response format matches PaleoBond-compatible structure")
+            print("[OK] Response format matches PaleoBond-compatible structure")
             print(f"  - polymer_id: {parsed['polymer_id']}")
             print(f"  - smiles: {parsed['smiles']}")
             print(f"  - properties count: {len(parsed['properties'])}")
         else:
-            print("✗ Response format does not match expected structure")
+            print("[ERROR] Response format does not match expected structure")
     except:
-        print("✗ Response is not valid JSON")
+        print("[ERROR] Response is not valid JSON")

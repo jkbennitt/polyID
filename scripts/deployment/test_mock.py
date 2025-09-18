@@ -1,6 +1,7 @@
 import sys
 import os
-sys.path.insert(0, os.path.dirname(__file__))
+# Add the deployment/huggingface directory to path to import app
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'deployment', 'huggingface'))
 
 # Import the necessary parts
 from app import predict_polymer_properties, MOCK_MODE, MODEL_AVAILABLE

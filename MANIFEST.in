@@ -1,2 +1,2 @@
 include versioneer.py
-include polyid/_version.py
+include src/polyid/_version.py

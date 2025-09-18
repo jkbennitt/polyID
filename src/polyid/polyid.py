@@ -31,8 +31,8 @@ from sklearn.preprocessing import RobustScaler
 #from tensorflow.keras.callbacks import CSVLogger, ModelCheckpoint
 from keras.callbacks import CSVLogger, ModelCheckpoint
 
-from polyid.models.callbacks import PandasLogger
-from polyid.preprocessors.features import atom_features_v1, bond_features_v1
+from .models.callbacks import PandasLogger
+from .preprocessors.features import atom_features_v1, bond_features_v1
 
 import keras
 from tqdm import tqdm

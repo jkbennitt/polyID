@@ -1,3 +1,8 @@
+import sys
+import os
+# Add src directory to path for local imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
 import gradio as gr
 from spaces import GPU
 import pandas as pd

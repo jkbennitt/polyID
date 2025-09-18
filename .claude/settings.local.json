@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(for dir in src deployment scripts docs examples)",
+      "Bash(do echo \"  $dir/\")",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(..venvScriptsactivate)",
+      "Bash(.venvScriptsactivate.bat)",
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(.venv/Scripts/pip.exe install:*)",
+      "Bash(timeout 10 python:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
