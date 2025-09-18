@@ -12,3 +12,4 @@ nfp
 tqdm
 shortuuid
 m2p
+rdkit

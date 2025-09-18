@@ -85,7 +85,10 @@ def predict_polymer_properties(smiles):
     try:
         if not smiles:
             return json.dumps({"error": "Please enter a SMILES string"}, indent=2)
-        
+
+        # Generate polymer ID from SMILES hash
+        polymer_id = f"POLY-{hashlib.md5(smiles.encode()).hexdigest()[:8].upper()}"
+
         # Create dataframe with SMILES
         df = pd.DataFrame({
             'smiles_polymer': [smiles],
@@ -93,24 +96,31 @@ def predict_polymer_properties(smiles):
             'distribution': ['random'],
             'smiles_monomer': [smiles]  # Assuming single monomer for simplicity
         })
-        
+
         if MODEL_AVAILABLE and not MOCK_MODE:
             # Make predictions
             predictions = mm.make_aggregate_predictions(df)
 
             # Extract prediction values (assuming mean aggregation)
-            result = {}
+            properties = {}
             for col in prediction_columns:
                 pred_col = f"{col}_pred_mean"
                 if pred_col in predictions.columns:
-                    result[col] = float(predictions[pred_col].iloc[0])
+                    properties[col] = float(predictions[pred_col].iloc[0])
                 else:
-                    result[col] = "N/A"
+                    properties[col] = None  # Use None instead of "N/A" for JSON compatibility
         else:
-            result = generate_mock_predictions(smiles)
-        
-        return json.dumps(result, indent=2)
-    
+            properties = generate_mock_predictions(smiles)
+
+        # PaleoBond-compatible response format
+        response = {
+            "polymer_id": polymer_id,
+            "smiles": smiles,
+            "properties": properties
+        }
+
+        return json.dumps(response, indent=2)
+
     except Exception as e:
         return json.dumps({"error": f"Prediction failed: {str(e)}"}, indent=2)
 
