@@ -1,0 +1,14 @@
+gradio==5.46.0
+spaces
+torch>=2.1.0
+transformers
+numpy
+pandas
+scikit-learn
+scipy
+tensorflow
+networkx
+nfp
+tqdm
+shortuuid
+m2p

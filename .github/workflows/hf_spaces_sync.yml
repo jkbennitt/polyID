@@ -1,0 +1,19 @@
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync-to-hf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Push to HF Spaces
+        uses: huggingface_hub_action@main
+        with:
+          repo_id: jkbennitt/polyid-private  
+          local_dir: .
+          token: ${{ secrets.HF_TOKEN }}
