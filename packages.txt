@@ -1,0 +1,6 @@
+libboost-dev
+libcairo2-dev
+libeigen3-dev
+libgomp1
+python3-dev
+build-essential
