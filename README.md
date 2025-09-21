@@ -1,25 +1,56 @@
+---
+title: PolyID
+emoji: 🧬
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: "5.48.0"
+app_file: app.py
+python_version: "3.10"
+pinned: false
+license: bsd-3-clause
+short_description: PolyID polymer property prediction using graph neural networks
+---
+
+# PolyID - Polymer Property Prediction
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/NREL/polyID/master/images/polyID-logo_color-full.svg" alt="PolyID Logo" width="400"/>
 </p>
 
-PolyID<sup>TM</sup> provides a framework for building, training, and predicting polymer properities using graph neural networks. The codes leverages [nfp](https://pypi.org/project/nfp/), for building tensorflow-based message-passing neural networ, and [m2p](https://pypi.org/project/m2p/), for building polymer structures.  The notebooks have been provided that demonstrate how to: (1) build polymer structures from a polymer database and split into a training/validation and test set, (2) train a message passing neural network from using the trainining/validation set, and (3) evaluate the trained network on the test set. These three notebooks follow the methodology used in the forthcoming publication.
+## Overview
 
-1. [Building polymer structures](https://github.com/NREL/polyID/blob/master/examples/1_generate_polymer_structures.ipynb): `examples/1_generate_polymer_structures.ipynb`
-2. [Training a message passing neural network](https://github.com/NREL/polyID/blob/master/examples/2_generate_and_train_models.ipynb): `examples/2_generate_and_train_models.ipynb`
-3. [Predicting and evaluating a trained network](https://github.com/NREL/polyID/blob/master/examples/3_evaluate_model_performance_and_DoV.ipynb): `examples/3_evaluate_model_performance_and_DoV.ipynb`
+PolyID™ provides a framework for building, training, and predicting polymer properties using graph neural networks. This Hugging Face Spaces deployment offers an interactive interface for predicting polymer properties from molecular structures.
 
-Additional notebooks have been provided to provide more examples and capabilities of the PolyID code base.
+## Features
 
-4. [Checking domain of validity](https://github.com/NREL/polyID/blob/master/examples/example_determine_domain-of-validity.ipynb): `examples/example_determine_domain-of-validity.ipynb`
-5. [Generating hierarchical fingerprints for performance comparison](https://github.com/NREL/polyID/blob/master/examples/example_hierarchical_fingerprints.ipynb): `examples/example_hierarchical_fingerprints.ipynb`
-6. [Predicting with the trained model](https://github.com/NREL/polyID/blob/master/examples/example_predict_with_trained_models.ipynb): `examples/example_predict_with_trained_models.ipynb` 
+- **Real-time Polymer Property Prediction**: Predict glass transition temperature (Tg), melting temperature (Tm), and other properties
+- **Graph Neural Networks**: Leverages message-passing neural networks for molecular representation
+- **Domain of Validity Analysis**: Assess prediction reliability and confidence
+- **Interactive Interface**: User-friendly Gradio interface for easy polymer analysis
 
-For more details, see the manuscript [PolyID: Artificial Intelligence for Discovering Performance-Advantaged and Sustainable Polymers](https://doi.org/10.1021/acs.macromol.3c00994), _Macromolecules_ 2023.
+## Technology Stack
 
-## Cite 
-If you use PolyID in your work, please cite
-```
+This deployment uses **Standard GPU Spaces** for full compatibility with the complete chemistry software stack:
+
+- **Chemistry Processing**: RDKit for molecular fingerprinting and structure analysis
+- **Neural Networks**: TensorFlow 2.16+ with NFP (Neural Fingerprint) layers
+- **Polymer Structures**: m2p for polymer structure generation and processing
+- **Interface**: Gradio 5.48+ for interactive web interface
+- **Python**: 3.11 for optimal performance and compatibility
+
+## Usage
+
+1. **Input Polymer Structure**: Enter a SMILES string representing your polymer structure
+2. **Select Properties**: Choose which properties to predict (Tg, Tm, etc.)
+3. **Get Predictions**: Receive predictions with confidence intervals
+4. **Analyze Results**: Review domain of validity analysis for prediction reliability
+
+## Citation
+
+If you use PolyID in your work, please cite:
+
+```bibtex
 @article{wilson2023polyid,
   title={PolyID: Artificial Intelligence for Discovering Performance-Advantaged and Sustainable Polymers},
   author={Wilson, A Nolan and St John, Peter C and Marin, Daniela H and Hoyt, Caroline B and Rognerud, Erik G and Nimlos, Mark R and Cywar, Robin M and Rorrer, Nicholas A and Shebek, Kevin M and Broadbelt, Linda J and Beckham, Gregg T and Crowley, Michael F},
@@ -31,3 +62,18 @@ If you use PolyID in your work, please cite
   publisher={ACS Publications}
 }
 ```
+
+## Standard GPU Deployment
+
+This application is deployed on **Hugging Face Standard GPU Spaces** to ensure full compatibility with:
+
+- Complex chemistry packages (RDKit, NFP, m2p)
+- Advanced molecular processing capabilities
+- Complete TensorFlow/neural network functionality
+- Reliable prediction performance
+
+For more information about PolyID, visit the [GitHub repository](https://github.com/NREL/polyID).
+
+## License
+
+PolyID is licensed under the BSD 3-Clause License.

@@ -1,0 +1,51 @@
+# PolyID Standard GPU Dependencies - Latest Stable for Python 3.11
+# Optimized for Hugging Face Standard GPU Spaces deployment
+
+# Core interface and deployment
+gradio>=5.48.0
+spaces>=0.41.0
+
+# Core scientific computing stack
+numpy>=1.26.0
+pandas>=2.1.0
+scipy>=1.11.0
+scikit-learn>=1.4.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Deep learning and neural networks - TensorFlow 2.14 to match project environment
+tensorflow>=2.14.0,<2.17.0
+tensorflow-addons>=0.23.0
+
+# Chemistry and molecular packages (stable versions for compatibility)
+rdkit>=2023.9.1
+nfp>=0.3.0
+m2p>=0.1.0
+
+# Essential polyid installation - install from source
+-e .
+
+# Graph and network analysis
+networkx>=3.2.0
+
+# Utility packages
+tqdm>=4.66.0
+shortuuid>=1.0.11
+packaging>=23.0
+
+# Data processing and I/O
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# Additional scientific libraries for polymer analysis
+mordred>=1.2.0
+
+# Jupyter support for examples (if needed)
+jupyter>=1.0.0
+ipykernel>=6.25.0
+
+# Development and testing tools (optional for production)
+pytest>=7.4.0
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
