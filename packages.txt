@@ -1,20 +1,12 @@
-# System packages for PolyID Standard GPU Spaces deployment
-# Comprehensive chemistry stack and molecular computing dependencies
-
-# Standard build and development tools
 build-essential
 cmake
 pkg-config
 python3-dev
-
-# Core system libraries
 libgomp1
 libc6-dev
 libffi-dev
 libssl-dev
 zlib1g-dev
-
-# Boost libraries (essential for RDKit and chemistry packages)
 libboost-dev
 libboost-python-dev
 libboost-serialization-dev
@@ -23,21 +15,15 @@ libboost-thread-dev
 libboost-iostreams-dev
 libboost-program-options-dev
 libboost-regex-dev
-
-# Graphics and visualization libraries
 libcairo2-dev
 libpng-dev
 libjpeg-dev
 libfreetype6-dev
 libfontconfig1-dev
-
-# Mathematical and scientific computing libraries
 libeigen3-dev
 liblapack-dev
 libblas-dev
 libatlas-base-dev
-
-# X11 and display libraries (for molecular visualization)
 libxrender1
 libxrandr2
 libxss1
@@ -48,33 +34,20 @@ libxext6
 libxfixes3
 libxi6
 libxinerama1
-libxrandr2
-libxss1
 libxtst6
 libxv1
 libxxf86vm1
 libfontconfig1
 libice6
 libsm6
-
-# Additional libraries for molecular computing
 libxml2-dev
 libxslt1-dev
 libbz2-dev
 liblzma-dev
-
-# Database and I/O support
 libsqlite3-dev
 libhdf5-dev
-
-# Additional dependencies for robust chemistry package support
 gfortran
 libgfortran5
 libquadmath0
-
-# Essential for RDKit compilation and operation
-librdkit-dev
 swig
-
-# Memory and performance optimization
 libtcmalloc-minimal4
