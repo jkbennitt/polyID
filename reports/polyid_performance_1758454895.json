@@ -1,0 +1,103 @@
+{
+  "timestamp": 1758454895,
+  "system_info": {
+    "cpu_count": 12,
+    "memory_total_gb": 31.954875946044922,
+    "python_version": "3.13.2 (tags/v3.13.2:4f8bb39, Feb  4 2025, 15:23:48) [MSC v.1942 64 bit (AMD64)]"
+  },
+  "results": [
+    {
+      "name": "Import Test",
+      "success": false,
+      "duration": 4.722259044647217,
+      "memory_mb": 106.51953125,
+      "cpu_percent": 0.0,
+      "throughput": null,
+      "error": "TensorFlow: No module named 'tensorflow'; RDKit: No module named 'rdkit'; NFP: No module named 'nfp'; PolyID: No module named 'rdkit'",
+      "details": {
+        "dependencies": {
+          "tensorflow": false,
+          "rdkit": false,
+          "nfp": false,
+          "polyid": false,
+          "gradio": "5.46.1"
+        },
+        "critical_missing": true
+      }
+    },
+    {
+      "name": "RDKit Performance",
+      "success": false,
+      "duration": 0,
+      "memory_mb": 0,
+      "cpu_percent": 0,
+      "throughput": null,
+      "error": "RDKit not available",
+      "details": null
+    },
+    {
+      "name": "TensorFlow Performance",
+      "success": false,
+      "duration": 0,
+      "memory_mb": 0,
+      "cpu_percent": 0,
+      "throughput": null,
+      "error": "TensorFlow not available",
+      "details": null
+    },
+    {
+      "name": "test_app_simulation",
+      "success": false,
+      "duration": 0,
+      "memory_mb": 0,
+      "cpu_percent": 0,
+      "throughput": null,
+      "error": "'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+      "details": null
+    },
+    {
+      "name": "Memory Stress",
+      "success": true,
+      "duration": 0.10603809356689453,
+      "memory_mb": 0.5234375,
+      "cpu_percent": 94.9,
+      "throughput": null,
+      "error": null,
+      "details": {
+        "peak_memory_mb": 191.25,
+        "memory_growth_mb": 39.63671875,
+        "memory_recovered_mb": 39.11328125,
+        "recovery_rate_percent": 98.67941263427615,
+        "memory_snapshots": [
+          151.61328125,
+          156.8671875,
+          160.640625,
+          164.46484375,
+          168.28515625,
+          172.1171875,
+          175.9453125,
+          179.76953125,
+          183.56640625,
+          187.421875
+        ]
+      }
+    },
+    {
+      "name": "Concurrent Load",
+      "success": true,
+      "duration": 0.007786750793457031,
+      "memory_mb": 0.1875,
+      "cpu_percent": 0.0,
+      "throughput": 1027.3861604409062,
+      "error": null,
+      "details": {
+        "total_tasks": 8,
+        "successful_tasks": 8,
+        "success_rate": 100.0,
+        "avg_task_duration_ms": 2.634108066558838,
+        "throughput_per_sec": 1027.3861604409062,
+        "workers": 4
+      }
+    }
+  ]
+}

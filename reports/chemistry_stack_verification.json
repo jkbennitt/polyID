@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-09-21T07:35:55.236370",
+  "platform": "win32",
+  "python_version": "3.13.2 (tags/v3.13.2:4f8bb39, Feb  4 2025, 15:23:48) [MSC v.1942 64 bit (AMD64)]",
+  "tests": {
+    "RDKit": {
+      "name": "RDKit",
+      "critical": true,
+      "status": "FAIL",
+      "duration": 0.001,
+      "details": {
+        "import": "Failed: No module named 'rdkit'"
+      },
+      "error": null
+    },
+    "NFP": {
+      "name": "NFP",
+      "critical": true,
+      "status": "FAIL",
+      "duration": 0.001,
+      "details": {
+        "import": "Failed: No module named 'nfp'"
+      },
+      "error": null
+    },
+    "m2p": {
+      "name": "m2p",
+      "critical": false,
+      "status": "FAIL",
+      "duration": 0.001,
+      "details": {
+        "import": "Failed: No module named 'm2p'"
+      },
+      "error": null
+    },
+    "TensorFlow": {
+      "name": "TensorFlow",
+      "critical": true,
+      "status": "FAIL",
+      "duration": 0.001,
+      "details": {
+        "import": "Failed: No module named 'tensorflow'"
+      },
+      "error": null
+    },
+    "PolyID": {
+      "name": "PolyID",
+      "critical": true,
+      "status": "FAIL",
+      "duration": 5.612,
+      "details": {
+        "import": "Failed: No module named 'rdkit'"
+      },
+      "error": null
+    },
+    "Dependencies Compatibility": {
+      "name": "Dependencies Compatibility",
+      "critical": true,
+      "status": "FAIL",
+      "duration": 0.003,
+      "details": {
+        "rdkit_nfp": "Incompatible: No module named 'rdkit'",
+        "rdkit_tensorflow": "Incompatible: No module named 'rdkit'",
+        "nfp_tensorflow": "Incompatible: No module named 'nfp'",
+        "full_stack": "Failed: No module named 'rdkit'"
+      },
+      "error": null
+    },
+    "Numerical Stability": {
+      "name": "Numerical Stability",
+      "critical": false,
+      "status": "FAIL",
+      "duration": 0.005,
+      "details": {
+        "edge_cases": "Failed: No module named 'rdkit'",
+        "batch_processing": "Stable"
+      },
+      "error": null
+    }
+  }
+}

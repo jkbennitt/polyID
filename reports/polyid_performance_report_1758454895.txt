@@ -1,0 +1,86 @@
+================================================================================
+POLYID PERFORMANCE ANALYSIS REPORT
+================================================================================
+Generated: 2025-09-21 07:41:35
+System: 12 CPUs, 32.0 GB RAM
+
+SUMMARY
+----------------------------------------
+Tests Run: 6
+Passed: 2
+Failed: 4
+Success Rate: 33.3%
+Total Duration: 4.84s
+Total Memory Impact: 107.2MB
+
+DETAILED RESULTS
+--------------------------------------------------------------------------------
+
+Import Test: FAIL
+  Duration: 4.722s
+  Memory: 106.5MB
+  CPU: 0.0%
+  Error: TensorFlow: No module named 'tensorflow'; RDKit: No module named 'rdkit'; NFP: No module named 'nfp'; PolyID: No module named 'rdkit'
+  Details:
+    dependencies: {'tensorflow': False, 'rdkit': False, 'nfp': False, 'polyid': False, 'gradio': '5.46.1'}
+    critical_missing: True
+
+RDKit Performance: FAIL
+  Duration: 0.000s
+  Memory: 0.0MB
+  CPU: 0.0%
+  Error: RDKit not available
+
+TensorFlow Performance: FAIL
+  Duration: 0.000s
+  Memory: 0.0MB
+  CPU: 0.0%
+  Error: TensorFlow not available
+
+test_app_simulation: FAIL
+  Duration: 0.000s
+  Memory: 0.0MB
+  CPU: 0.0%
+  Error: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+Memory Stress: PASS
+  Duration: 0.106s
+  Memory: 0.5MB
+  CPU: 94.9%
+  Details:
+    peak_memory_mb: 191.250
+    memory_growth_mb: 39.637
+    memory_recovered_mb: 39.113
+    recovery_rate_percent: 98.679
+    memory_snapshots: [151.61328125, 156.8671875, 160.640625, 164.46484375, 168.28515625, 172.1171875, 175.9453125, 179.76953125, 183.56640625, 187.421875]
+
+Concurrent Load: PASS
+  Duration: 0.008s
+  Memory: 0.2MB
+  CPU: 0.0%
+  Throughput: 1027.39 items/sec
+  Details:
+    total_tasks: 8
+    successful_tasks: 8
+    success_rate: 100.000
+    avg_task_duration_ms: 2.634
+    throughput_per_sec: 1027.386
+    workers: 4
+
+
+PERFORMANCE ASSESSMENT
+--------------------------------------------------------------------------------
+IDENTIFIED ISSUES:
+  - Critical dependencies missing
+
+RECOMMENDATIONS:
+  - Install missing dependencies (RDKit, TensorFlow, PolyID)
+
+DEPLOYMENT RECOMMENDATIONS:
+  - Monitor memory usage in production
+  - Implement caching for repeated operations
+  - Use TensorFlow optimization for inference
+  - Consider request batching for high load
+  - Set up monitoring and alerting
+
+================================================================================

@@ -20,11 +20,17 @@ pip install -e .
 
 ### Testing
 ```bash
-# Run tests with pytest
-pytest
+# Run original PolyID unit tests
+pytest tests/
 
-# Run specific test file
+# Run specific unit test file
 pytest tests/test_singlemodel.py
+
+# Run HF Spaces deployment tests
+pytest hf-spaces-testing/
+
+# Run specific HF Spaces test
+pytest hf-spaces-testing/test_polyid_comprehensive.py
 
 # Run with verbose output
 pytest -v
@@ -117,11 +123,23 @@ twine check dist/*
 
 ## File Organization Patterns
 
+### Core Project Structure
 - **Core Logic**: Single file `polyid/polyid.py` contains main SingleModel/MultiModel classes
 - **Modular Architecture**: Neural networks in `models/`, preprocessing in `preprocessors/`
 - **Configuration**: Parameters class provides centralized hyperparameter management
 - **Examples**: Jupyter notebooks demonstrate complete workflows
-- **Testing**: pytest with fixtures for model setup and validation
+
+### Testing Structure
+- **`tests/`**: Original PolyID unit tests with pytest fixtures for model setup and validation
+- **`hf-spaces-testing/`**: Hugging Face Spaces deployment testing suite with comprehensive validation tools
+
+### Documentation and Reports
+- **`docs/`**: Organized documentation with subcategories:
+  - `docs/deployment/`: Deployment guides and implementation instructions
+  - `docs/analysis/`: Technical analysis and compatibility studies
+  - `docs/guides/`: Development workflow and branch management guides
+  - `docs/reviews/`: Detailed technical reviews and system assessments
+- **`reports/`**: Generated analysis reports, performance metrics, and validation results
 
 ## Current Development Context
 

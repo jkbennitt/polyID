@@ -1,0 +1,204 @@
+{
+  "timestamp": "2025-09-21T07:39:53.818821",
+  "components": {
+    "RDKit": {
+      "package": "rdkit>=2023.9.1",
+      "system_deps": [
+        "libboost-dev",
+        "libboost-python-dev",
+        "libboost-serialization-dev",
+        "cmake"
+      ],
+      "critical": true,
+      "functionality": [
+        "SMILES parsing and validation",
+        "Molecular descriptor calculation",
+        "3D conformer generation",
+        "Molecular fingerprints"
+      ],
+      "common_issues": [
+        "Boost library version conflicts",
+        "Python binding compilation failures",
+        "Memory allocation errors with large molecules"
+      ]
+    },
+    "NFP": {
+      "package": "nfp>=0.3.0",
+      "dependencies": [
+        "tensorflow",
+        "numpy"
+      ],
+      "critical": true,
+      "functionality": [
+        "Neural fingerprint generation",
+        "Graph neural network layers",
+        "Molecular graph preprocessing"
+      ],
+      "common_issues": [
+        "TensorFlow version incompatibility",
+        "GPU memory management",
+        "Graph construction errors"
+      ]
+    },
+    "m2p": {
+      "package": "m2p>=0.1.0",
+      "dependencies": [
+        "rdkit"
+      ],
+      "critical": false,
+      "functionality": [
+        "Monomer to polymer conversion",
+        "Copolymer structure generation",
+        "Polymer SMILES generation"
+      ],
+      "common_issues": [
+        "RDKit dependency failures",
+        "Complex polymer structure handling"
+      ]
+    },
+    "TensorFlow": {
+      "package": "tensorflow>=2.14.0,<2.17.0",
+      "system_deps": [
+        "cuda",
+        "cudnn"
+      ],
+      "critical": true,
+      "functionality": [
+        "Neural network training/inference",
+        "GPU acceleration",
+        "Model persistence"
+      ],
+      "common_issues": [
+        "CUDA version mismatches",
+        "GPU memory allocation",
+        "Version conflicts with other packages"
+      ]
+    }
+  },
+  "dependencies": {},
+  "deployment_issues": [
+    {
+      "issue": "RDKit import failure",
+      "symptoms": [
+        "ImportError: No module named 'rdkit'",
+        "libboost_python not found"
+      ],
+      "causes": [
+        "Missing system libraries",
+        "Incorrect Python version",
+        "Incomplete conda environment"
+      ],
+      "solutions": [
+        "Use conda-forge channel for RDKit",
+        "Install all boost libraries via packages.txt",
+        "Use Python 3.10 or 3.11 (not 3.12+)"
+      ]
+    },
+    {
+      "issue": "NFP TensorFlow incompatibility",
+      "symptoms": [
+        "NFP layers not working",
+        "AttributeError in NFP modules"
+      ],
+      "causes": [
+        "TensorFlow version mismatch",
+        "Missing TensorFlow addons"
+      ],
+      "solutions": [
+        "Pin TensorFlow to 2.14.x-2.16.x range",
+        "Install tensorflow-addons",
+        "Check NFP version compatibility"
+      ]
+    },
+    {
+      "issue": "GPU memory errors",
+      "symptoms": [
+        "OOM errors",
+        "CUDA out of memory"
+      ],
+      "causes": [
+        "Large batch sizes",
+        "Memory growth not configured",
+        "Multiple models loaded"
+      ],
+      "solutions": [
+        "Set tf.config.experimental.set_memory_growth",
+        "Reduce batch size",
+        "Use model checkpointing"
+      ]
+    },
+    {
+      "issue": "NetworkX version conflict",
+      "symptoms": [
+        "mordred package conflicts",
+        "Graph operations fail"
+      ],
+      "causes": [
+        "NetworkX 3.x incompatible with mordred",
+        "Package resolution conflicts"
+      ],
+      "solutions": [
+        "Pin networkx>=2.8,<3.0",
+        "Check mordred compatibility",
+        "Consider alternative descriptor packages"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Environment Setup",
+      "recommendation": "Use Standard GPU Space for production",
+      "rationale": "Chemistry packages require system libraries that ZeroGPU doesn't support",
+      "implementation": [
+        "Select 'Standard GPU' when creating space",
+        "Use T4 GPU minimum for reasonable performance",
+        "Consider A10G for better performance"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "category": "Package Installation",
+      "recommendation": "Use conda for RDKit installation",
+      "rationale": "RDKit binary wheels often have compatibility issues",
+      "implementation": [
+        "Create custom Docker image with conda",
+        "Install from conda-forge channel",
+        "Pre-build environment in Docker"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Performance Optimization",
+      "recommendation": "Implement lazy loading for models",
+      "rationale": "Reduce memory usage and startup time",
+      "implementation": [
+        "Load models only when needed",
+        "Use singleton pattern for model instances",
+        "Implement model caching"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "category": "Error Handling",
+      "recommendation": "Add fallback for chemistry failures",
+      "rationale": "Ensure app remains functional even with partial failures",
+      "implementation": [
+        "Try-catch around chemistry imports",
+        "Provide mock predictions when chemistry fails",
+        "Clear error messages to users"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Monitoring",
+      "recommendation": "Add comprehensive diagnostics",
+      "rationale": "Quick identification of deployment issues",
+      "implementation": [
+        "Startup diagnostics in app.py",
+        "Component status display in UI",
+        "Logging of all chemistry operations"
+      ]
+    }
+  ]
+}

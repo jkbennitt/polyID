@@ -21,6 +21,7 @@ import seaborn as sns
 
 # Configure logging and warnings
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("httpx").setLevel(logging.ERROR)
 warnings.filterwarnings('ignore')
 
 # Set up path for PolyID imports
@@ -31,23 +32,23 @@ try:
     import rdkit
     from rdkit import Chem
     from rdkit.Chem import Descriptors, rdMolDescriptors
-    print("✅ RDKit imported successfully")
+    print("[OK] RDKit imported successfully")
 except ImportError as e:
-    print(f"❌ RDKit import failed: {e}")
+    print(f"[FAIL] RDKit import failed: {e}")
     rdkit = None
 
 try:
     import nfp
-    print("✅ NFP imported successfully")
+    print("[OK] NFP imported successfully")
 except ImportError as e:
-    print(f"❌ NFP import failed: {e}")
+    print(f"[FAIL] NFP import failed: {e}")
     nfp = None
 
 try:
     import shortuuid
-    print("✅ shortuuid imported successfully")
+    print("[OK] shortuuid imported successfully")
 except ImportError as e:
-    print(f"❌ shortuuid import failed: {e}")
+    print(f"[FAIL] shortuuid import failed: {e}")
     shortuuid = None
 
 try:
@@ -57,18 +58,18 @@ try:
     from polyid.models.base_models import global100
     from polyid.preprocessors.preprocessors import PolymerPreprocessor
     from polyid.domain_of_validity import DoV
-    print("✅ PolyID core modules imported successfully")
+    print("[OK] PolyID core modules imported successfully")
     POLYID_AVAILABLE = True
 except ImportError as e:
-    print(f"❌ PolyID import failed: {e}")
+    print(f"[FAIL] PolyID import failed: {e}")
     print(f"   Attempting fallback imports...")
     try:
         # Fallback to simpler imports if package structure differs
         import polyid
-        print("✅ PolyID package imported (limited functionality)")
+        print("[OK] PolyID package imported (limited functionality)")
         POLYID_AVAILABLE = True
     except ImportError as e2:
-        print(f"❌ Complete PolyID import failed: {e2}")
+        print(f"[FAIL] Complete PolyID import failed: {e2}")
         POLYID_AVAILABLE = False
 
 # Sample polymer SMILES for demonstration
@@ -562,19 +563,19 @@ def create_gradio_interface():
 
             status_items = []
             if rdkit:
-                status_items.append("✅ RDKit: Available")
+                status_items.append("[OK] RDKit: Available")
             else:
-                status_items.append("❌ RDKit: Not available")
+                status_items.append("[FAIL] RDKit: Not available")
 
             if nfp:
-                status_items.append("✅ NFP: Available")
+                status_items.append("[OK] NFP: Available")
             else:
-                status_items.append("❌ NFP: Not available")
+                status_items.append("[FAIL] NFP: Not available")
 
             if POLYID_AVAILABLE:
-                status_items.append("✅ PolyID: Available")
+                status_items.append("[OK] PolyID: Available")
             else:
-                status_items.append("❌ PolyID: Limited (using mock predictions)")
+                status_items.append("[WARN] PolyID: Limited (using mock predictions)")
 
             gr.Markdown("### Component Status:\n" + "\n".join(status_items))
 
@@ -601,9 +602,9 @@ def run_startup_diagnostics():
     print(f"Python Version: {sys.version}")
 
     # Import status
-    print(f"RDKit Available: {'✅' if rdkit else '❌'}")
-    print(f"NFP Available: {'✅' if nfp else '❌'}")
-    print(f"PolyID Available: {'✅' if POLYID_AVAILABLE else '❌'}")
+    print(f"RDKit Available: {'[OK]' if rdkit else '[FAIL]'}")
+    print(f"NFP Available: {'[OK]' if nfp else '[FAIL]'}")
+    print(f"PolyID Available: {'[OK]' if POLYID_AVAILABLE else '[FAIL]'}")
 
     # System info
     print(f"Working Directory: {os.getcwd()}")
@@ -613,9 +614,48 @@ def run_startup_diagnostics():
     try:
         import tensorflow as tf
         print(f"TensorFlow Version: {tf.__version__}")
-        print(f"GPU Available: {'✅' if tf.config.list_physical_devices('GPU') else '❌'}")
+        print(f"GPU Available: {'[OK]' if tf.config.list_physical_devices('GPU') else '[FAIL]'}")
+
+        # Detailed GPU diagnostics
+        print("\n--- TensorFlow GPU Diagnostics ---")
+        print(f"Built with CUDA: {tf.test.is_built_with_cuda()}")
+        print(f"Built with GPU support: {tf.test.is_built_with_gpu_support()}")
+
+        # Check CUDA availability
+        try:
+            print(f"CUDA available: {tf.test.is_built_with_cuda()}")
+            if tf.test.is_built_with_cuda():
+                print(f"CUDA version: {tf.sysconfig.get_build_info()['cuda_version']}")
+                print(f"cuDNN version: {tf.sysconfig.get_build_info()['cudnn_version']}")
+        except:
+            print("CUDA version info unavailable")
+
+        # List all physical devices
+        physical_devices = tf.config.list_physical_devices()
+        print(f"All physical devices: {[dev.device_type for dev in physical_devices]}")
+
+        # Check GPU devices specifically
+        gpu_devices = tf.config.list_physical_devices('GPU')
+        print(f"GPU devices found: {len(gpu_devices)}")
+        for i, gpu in enumerate(gpu_devices):
+            print(f"  GPU {i}: {gpu}")
+
+        # Check logical devices
+        logical_devices = tf.config.list_logical_devices('GPU')
+        print(f"Logical GPU devices: {len(logical_devices)}")
+
+        # Test GPU memory growth
+        try:
+            for gpu in gpu_devices:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            print("GPU memory growth set successfully")
+        except Exception as e:
+            print(f"GPU memory growth setup failed: {e}")
+
+        print("--- End GPU Diagnostics ---\n")
+
     except ImportError:
-        print("TensorFlow: ❌ Not available")
+        print("TensorFlow: [FAIL] Not available")
 
     print("=" * 50)
 
