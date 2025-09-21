@@ -6,10 +6,11 @@ colorTo: green
 sdk: gradio
 sdk_version: "5.48.0"
 app_file: app.py
-python_version: "3.10"
+python_version: "3.11"
+hardware: standard-gpu
 pinned: false
 license: bsd-3-clause
-short_description: PolyID polymer property prediction using graph neural networks
+short_description: Polymer property prediction using graph neural networks
 ---
 
 # PolyID - Polymer Property Prediction
