@@ -20,8 +20,8 @@ rdkit>=2023.9.1
 nfp>=0.3.0
 m2p>=0.1.0
 
-# Graph and network analysis
-networkx>=3.2.0
+# Graph and network analysis - Compatible with mordred molecular descriptors
+networkx>=2.8,<3.0
 
 # Utility packages
 tqdm>=4.66.0
