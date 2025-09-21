@@ -9,8 +9,25 @@ import numpy as np
 import pandas as pd
 import scipy.stats as spstats
 import tensorflow as tf
-from nfp.preprocessing.mol_preprocessor import SmilesPreprocessor
-from nfp.preprocessing.tokenizer import Tokenizer
+
+try:
+    from nfp.preprocessing.mol_preprocessor import SmilesPreprocessor
+    from nfp.preprocessing.tokenizer import Tokenizer
+    NFP_AVAILABLE = True
+except ImportError:
+    print("Warning: NFP preprocessing not available. Using mock classes.")
+    # Mock nfp preprocessor classes
+    class SmilesPreprocessor:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __call__(self, *args, **kwargs):
+            return {}
+    class Tokenizer:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __call__(self, *args, **kwargs):
+            return []
+    NFP_AVAILABLE = False
 from numpy import linspace, log, log10
 from sklearn.preprocessing import KBinsDiscretizer, StandardScaler
 

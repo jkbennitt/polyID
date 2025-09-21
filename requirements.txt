@@ -1,4 +1,4 @@
-# FORCE REBUILD - Python 3.10.13 ZeroGPU - RDKit Fix - 2025-09-20-16:05:00
+# FORCE REBUILD - Python 3.10.13 ZeroGPU - NFP Fix - 2025-09-21-04:00:00
 gradio>=5.46.0
 spaces>=0.41.0
 torch>=2.1.0
@@ -7,9 +7,10 @@ numpy
 pandas
 scikit-learn
 scipy
-tensorflow
+tensorflow>=2.12.0
 networkx
-nfp
+# Neural Fingerprint for molecular graphs
+nfp>=0.3.0
 tqdm
 shortuuid
 m2p

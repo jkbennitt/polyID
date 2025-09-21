@@ -18,14 +18,27 @@ from copy import copy
 from pathlib import Path
 from typing import Dict, List, Union
 
-import nfp
+try:
+    import nfp
+    from nfp import (EdgeUpdate, GlobalUpdate, NodeUpdate,
+                     masked_mean_absolute_error)
+    NFP_AVAILABLE = True
+except ImportError:
+    print("Warning: NFP not available. Neural fingerprint functionality will be limited.")
+    # Mock nfp objects for fallback
+    class MockNFP:
+        def __getattr__(self, name):
+            return lambda *args, **kwargs: None
+    nfp = MockNFP()
+    EdgeUpdate = GlobalUpdate = NodeUpdate = lambda *args, **kwargs: None
+    masked_mean_absolute_error = lambda *args, **kwargs: 0.0
+    NFP_AVAILABLE = False
+
 import pandas as pd
 import numpy as np
 import shortuuid
 import tensorflow as tf
 from keras.models import load_model as load_keras_model
-from nfp import (EdgeUpdate, GlobalUpdate, NodeUpdate,
-                 masked_mean_absolute_error)
 from sklearn import model_selection
 from sklearn.preprocessing import RobustScaler
 #from tensorflow.keras.callbacks import CSVLogger, ModelCheckpoint

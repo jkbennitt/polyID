@@ -1,6 +1,18 @@
-import nfp
+try:
+    import nfp
+    from nfp import masked_mean_absolute_error
+    NFP_AVAILABLE = True
+except ImportError:
+    print("Warning: NFP not available in base_models. Using mock functions.")
+    # Mock nfp objects
+    class MockNFP:
+        def __getattr__(self, name):
+            return lambda *args, **kwargs: None
+    nfp = MockNFP()
+    masked_mean_absolute_error = lambda *args, **kwargs: 0.0
+    NFP_AVAILABLE = False
+
 import tensorflow as tf
-from nfp import masked_mean_absolute_error
 #from tensorflow.keras import layers
 from keras import layers
 

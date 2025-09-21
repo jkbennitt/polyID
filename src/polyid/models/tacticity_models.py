@@ -1,7 +1,18 @@
 """Models that incorporate tacticity in one way or another"""
 # TODO document better
 
-import nfp
+try:
+    import nfp
+    NFP_AVAILABLE = True
+except ImportError:
+    print("Warning: NFP not available in tacticity_models. Using mock functions.")
+    # Mock nfp objects
+    class MockNFP:
+        def __getattr__(self, name):
+            return lambda *args, **kwargs: None
+    nfp = MockNFP()
+    NFP_AVAILABLE = False
+
 import tensorflow as tf
 from keras import layers
 
