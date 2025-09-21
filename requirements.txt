@@ -1,4 +1,4 @@
-# FORCE REBUILD - Python 3.10.13 ZeroGPU - 2025-09-20-15:42:33
+# FORCE REBUILD - Python 3.10.13 ZeroGPU - RDKit Fix - 2025-09-20-16:05:00
 gradio>=5.46.0
 spaces>=0.41.0
 torch>=2.1.0
@@ -13,5 +13,5 @@ nfp
 tqdm
 shortuuid
 m2p
-# RDKit exact version for Python 3.10.13 compatibility
-rdkit==2024.3.1
+# Modern RDKit package - compatible with Python 3.10.13
+rdkit>=2023.9.1

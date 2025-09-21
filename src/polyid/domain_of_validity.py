@@ -1,7 +1,25 @@
 import pandas as pd
-from rdkit import Chem
-from rdkit.Chem import AllChem
 from tqdm import tqdm
+
+# Safe RDKit import with fallback
+try:
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+    RDKIT_AVAILABLE = True
+except ImportError:
+    print("Warning: RDKit not available. DoV functionality will be limited.")
+    RDKIT_AVAILABLE = False
+    # Create mock objects to prevent import errors
+    class MockChem:
+        @staticmethod
+        def MolFromSmiles(smiles):
+            return None
+    class MockAllChem:
+        @staticmethod
+        def GetMorganFingerprintAsBitVect(mol, radius, nBits):
+            return None
+    Chem = MockChem()
+    AllChem = MockAllChem()
 
 tqdm.pandas()
 
@@ -20,8 +38,14 @@ class DoV:
         Returns:
             pd.Series: Series containing the hashes for the each fingerprint and a count of their occurance in the molecule.
         """
+        if not RDKIT_AVAILABLE:
+            # Return mock fingerprint data
+            return pd.Series({}, name=smiles)
 
         mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            return pd.Series({}, name=smiles)
+
         fp = AllChem.GetMorganFingerprint(mol, self.radius, useFeatures=False)
         fp = pd.Series(fp.GetNonzeroElements(), name=smiles)
         return fp

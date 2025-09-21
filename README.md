@@ -80,7 +80,7 @@ polyID/
 
 ### Quick Start Instructions
 
-1. **Install Dependencies**: Ensure Python 3.13 is installed, then run:
+1. **Install Dependencies**: Ensure Python 3.10.13 is installed (required for ZeroGPU), then run:
    ```
    pip install -r requirements.txt
    ```
@@ -94,7 +94,7 @@ polyID/
 
 ### Dependency Notes
 
-- **Python 3.13 Compatibility**: This version has been updated to remove packages incompatible with Python 3.13 (`rdkit-pypi`, `tensorflow-addons`, `mordred`).
+- **Python 3.10.13 Compatibility**: This version is optimized for ZeroGPU which requires Python 3.10.13. RDKit and other chemistry packages are configured for this specific Python version.
 - **Mock Mode**: When models are unavailable or mock mode is forced, the app generates realistic simulated predictions based on SMILES hash for testing purposes.
 - **Model Loading**: The app safely attempts to load trained models from `src/polyid/models/`. If loading fails, it automatically falls back to mock mode.
 - **Hardware Acceleration**: Utilizes ZeroGPU for efficient deployment on Hugging Face Spaces.

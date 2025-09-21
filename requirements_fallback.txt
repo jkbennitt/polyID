@@ -1,0 +1,33 @@
+# Alternative requirements with explicit RDKit fallbacks for ZeroGPU
+# Use this if main requirements.txt fails
+
+gradio>=5.46.0
+spaces>=0.41.0
+torch>=2.1.0
+transformers
+numpy
+pandas
+scikit-learn
+scipy
+tensorflow
+networkx
+nfp
+tqdm
+shortuuid
+m2p
+
+# RDKit fallback options (try in order):
+# Option 1: Modern RDKit package
+rdkit-pypi>=2023.3.1
+
+# If rdkit-pypi fails, you can manually test:
+# Option 2: Specific wheels
+# rdkit-pypi==2022.9.5
+
+# Option 3: Legacy name (deprecated but may work in older environments)
+# rdkit
+
+# Additional chemistry dependencies that might help
+pip>=21.0
+wheel
+setuptools
