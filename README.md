@@ -4,7 +4,7 @@ emoji: 🧬
 colorFrom: blue
 colorTo: green
 sdk: gradio
-sdk_version: "5.48.0"
+sdk_version: "5.46.0"
 app_file: app.py
 python_version: "3.11"
 hardware: standard-gpu
