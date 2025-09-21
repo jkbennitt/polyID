@@ -2,13 +2,15 @@
 
 ## Implementation Overview
 
-**Goal**: Migrate PolyID from ZeroGPU to Standard GPU Spaces to resolve dependency compatibility issues and restore full chemistry stack functionality.
+**Goal**: Implement PolyID for Standard GPU Spaces from clean fork state, incorporating insights gained from ZeroGPU compatibility investigation to ensure robust chemistry stack deployment.
 
-**Key Changes**:
-- Remove ZeroGPU decorators and constraints
-- Update to standard GPU configuration
-- Clean dependency management without ZeroGPU limitations
-- Enable full RDKit, NFP, and chemistry package support
+**Approach**: Start fresh from clean fork and build with proven configurations and dependency management strategies learned during our investigation.
+
+**Key Benefits**:
+- Full chemistry package compatibility without restrictions
+- Proven dependency versions and configurations
+- Flexible Python version management
+- Comprehensive system dependency support
 
 ---
 
@@ -17,96 +19,111 @@
 Copy and paste this entire prompt to Claude Code when working on the `standard-gpu-deployment` branch:
 
 ```
-I need you to implement Option 1: Standard GPU Spaces deployment for the PolyID project. This involves migrating from ZeroGPU to standard GPU Spaces to resolve dependency compatibility issues.
+I need you to implement Option 1: Standard GPU Spaces deployment for the PolyID project. This is a FRESH implementation starting from the clean fork state, incorporating valuable insights gained from our ZeroGPU compatibility investigation.
 
 ## Context
 
-PolyID is a polymer property prediction application using graph neural networks. We've discovered that ZeroGPU Spaces have fundamental compatibility limitations with chemistry packages (RDKit, NFP, m2p) causing recurring dependency failures. The analysis is documented in `docs/ZeroGPU_Compatibility_Analysis.md`.
+PolyID is a polymer property prediction application using graph neural networks. During investigation, we discovered ZeroGPU Spaces have fundamental compatibility limitations with chemistry packages (RDKit, NFP, m2p). The complete analysis is in `docs/ZeroGPU_Compatibility_Analysis.md`.
+
+**Important**: You are starting from a CLEAN FORK STATE - not modifying existing ZeroGPU configurations. The branch has been reset to the original fork point before any ZeroGPU work.
+
+## Insights Gained from Investigation
+
+### Optimal Dependency Versions (Latest Stable):
+- `rdkit>=2024.3.1` - Latest RDKit with Python 3.11+ support
+- `nfp>=0.4.0` - Latest neural fingerprint with modern TensorFlow
+- `shortuuid>=1.0.11` - Latest UUID generation
+- `gradio>=5.48.0` - Latest Gradio with all features
+- `tensorflow>=2.16.0` - Latest stable TensorFlow
+
+### System Dependencies (chemistry stack):
+```
+libboost-dev, libcairo2-dev, libeigen3-dev, libgomp1, python3-dev, build-essential
+cmake, pkg-config, libboost-python-dev, libboost-serialization-dev,
+libboost-system-dev, libboost-thread-dev
+libxrender1, libfontconfig1, libice6, libsm6, libxext6, libxrandr2, libxss1
+```
+
+### Optimal Python Version:
+- Use `python_version: "3.11"` for best balance of stability and modern features
+- Much better chemistry package compatibility than 3.10
+- No ZeroGPU constraints - can use latest versions
 
 ## Current State
-
-- The project is currently configured for ZeroGPU with Python 3.10.13 exactly
-- Dependencies fail to install due to ZeroGPU environment restrictions
-- App falls back to mock mode instead of real functionality
-- All chemistry packages (RDKit, NFP, m2p) fail to import
+- Clean fork state with original PolyID code
+- No ZeroGPU configurations present
+- Original app.py without GPU decorators
+- Need to set up for Standard GPU Spaces from scratch
 
 ## Implementation Requirements
 
-### 1. Update README.md Configuration
+### 1. Create README.md for Standard GPU Deployment
 
-Change the frontmatter from:
-```yaml
-title: PolyID ZeroGPU
-emoji: 🧬
-colorFrom: blue
-colorTo: green
-sdk: gradio
-sdk_version: "5.46.0"
-app_file: app.py
-python_version: "3.10.13"
-pinned: false
-license: bsd-3-clause
-short_description: PolyID polymer property prediction with ZeroGPU acceleration
-```
+Create a new README.md with proper Hugging Face Spaces configuration:
 
-To:
 ```yaml
+---
 title: PolyID
 emoji: 🧬
 colorFrom: blue
 colorTo: green
 sdk: gradio
-sdk_version: "5.46.0"
+sdk_version: "5.48.0"
 app_file: app.py
-python_version: "3.10"
+python_version: "3.11"
 pinned: false
 license: bsd-3-clause
 short_description: PolyID polymer property prediction using graph neural networks
+---
 ```
 
-Update the description to remove ZeroGPU references and update Python version flexibility.
+Include content explaining this is a Standard GPU Spaces deployment with full chemistry package support and modern Python 3.11 for optimal performance.
 
-### 2. Modify app.py
+### 2. Create app.py for Standard GPU
 
-Remove ZeroGPU decorators and imports:
+Create the main Gradio application file. You'll need to:
 
-**Remove these lines:**
+**Import the core PolyID functionality:**
 ```python
-import spaces
-@spaces.GPU
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+from polyid import MultiModel, SingleModel
+import gradio as gr
 ```
 
-**Keep the core functionality** but remove GPU decorator from the prediction function. The function should work with standard GPU allocation.
+**Set up standard GPU allocation** (no special decorators needed - HF Spaces automatically provides GPU)
 
-**Update any ZeroGPU-specific comments** to reflect standard GPU usage.
+**Implement the prediction interface** following the original PolyID pattern but optimized for Gradio.
 
-### 3. Clean requirements.txt
+### 3. Create requirements.txt with latest stable versions
 
-Create a clean requirements.txt focused on compatibility without ZeroGPU restrictions:
+Create requirements.txt using optimal modern versions for Python 3.11:
 
 ```txt
-# PolyID Standard GPU Dependencies
-gradio>=5.46.0
-torch>=2.1.0
-transformers>=4.20.0
-numpy>=1.21.0
-pandas>=1.3.0
-scikit-learn>=1.0.0
-scipy>=1.7.0
-tensorflow>=2.12.0
-networkx>=2.6.0
-tqdm>=4.60.0
-shortuuid>=1.0.0
+# PolyID Standard GPU Dependencies - Latest Stable for Python 3.11
+gradio>=5.48.0
+torch>=2.4.0
+transformers>=4.45.0
+numpy>=1.26.0
+pandas>=2.1.0
+scikit-learn>=1.4.0
+scipy>=1.11.0
+tensorflow>=2.16.0
+networkx>=3.2.0
+tqdm>=4.66.0
+shortuuid>=1.0.11
 
-# Chemistry and molecular packages
-rdkit>=2023.9.1
-nfp>=0.3.0
-m2p>=0.1.0
+# Chemistry and molecular packages (latest versions)
+rdkit>=2024.3.1
+nfp>=0.4.0
+m2p>=0.2.0
 ```
 
-### 4. Update packages.txt
+### 4. Create packages.txt with comprehensive system dependencies
 
-Ensure comprehensive system dependencies for chemistry packages:
+Create packages.txt incorporating all system dependencies we discovered are needed:
 
 ```txt
 # Standard system dependencies
@@ -117,7 +134,7 @@ libgomp1
 python3-dev
 build-essential
 
-# Chemistry package dependencies
+# Chemistry package dependencies (learned from investigation)
 cmake
 pkg-config
 libboost-python-dev
@@ -135,25 +152,42 @@ libxrandr2
 libxss1
 ```
 
-### 5. Remove Defensive Imports
+### 5. Ensure Direct Package Imports (No Defensive Imports Needed)
 
-Since we're moving to standard GPU Spaces with full package support, remove the defensive try/catch imports and mock fallbacks from:
-- `src/polyid/polyid.py`
-- `src/polyid/models/base_models.py`
-- `src/polyid/models/tacticity_models.py`
-- `src/polyid/preprocessors/preprocessors.py`
+Since Standard GPU Spaces should support all packages, use direct imports in your Python files:
 
-Restore direct imports for RDKit, NFP, and other packages.
+**In `src/polyid/polyid.py`:**
+```python
+import nfp
+from nfp import EdgeUpdate, GlobalUpdate, NodeUpdate, masked_mean_absolute_error
+import shortuuid
+```
 
-### 6. Update Documentation
+**Optional Enhancement**: You could add defensive imports as a best practice for robustness, but they're not required like they were for ZeroGPU.
 
-Update `docs/CLAUDE.md`:
-- Remove ZeroGPU references
-- Update Python version to be flexible (3.10+)
+### 6. Select Appropriate GPU Hardware
+
+For PolyID deployment, choose GPU hardware based on your needs:
+
+**Recommended Options:**
+- **Nvidia T4 - small** ($0.40/hour): Good for development and light usage
+- **Nvidia A10G - small** ($1.00/hour): Better for production with more models
+- **Nvidia A100 - large** ($4.00/hour): Best performance for heavy workloads
+
+**Hardware Selection Process:**
+1. Go to Space Settings
+2. Select "Hardware" tab
+3. Choose appropriate GPU tier
+4. Note: Standard GPU provides better chemistry package compatibility than ZeroGPU
+
+### 7. Update docs/CLAUDE.md (Optional)
+
+If you want to update the project documentation:
+- Change Python version reference to "3.11"
 - Update development commands to reflect standard GPU deployment
-- Remove mock mode as primary option (it becomes backup only)
+- Note modern package versions and GPU hardware selection
 
-### 7. Testing Strategy
+### 8. Testing Strategy
 
 Create comprehensive tests to validate:
 - All chemistry packages import successfully
@@ -172,57 +206,59 @@ Create comprehensive tests to validate:
 
 ## Implementation Steps
 
-1. Start by reading the current configuration files to understand the changes needed
-2. Update README.md frontmatter and content
-3. Modify app.py to remove ZeroGPU decorators
-4. Clean up requirements.txt and packages.txt
-5. Remove defensive imports and restore direct package imports
-6. Update documentation to reflect standard GPU deployment
-7. Test the changes to ensure full functionality
-8. Commit the implementation with clear description
+1. Start by examining the current clean fork state
+2. Create README.md with Standard GPU configuration
+3. Create app.py for Gradio interface with standard GPU
+4. Create requirements.txt with proven dependency versions
+5. Create packages.txt with comprehensive system dependencies
+6. Ensure all PolyID Python files use direct imports
+7. Test the implementation locally if possible
+8. Deploy to Standard GPU Spaces and validate
+9. Commit the working implementation
 
 ## Notes
 
 - This approach prioritizes **functionality over cost optimization**
-- Standard GPU Spaces may have resource costs but provide full compatibility
-- The goal is to restore PolyID to its full intended functionality
-- All chemistry packages should work without restrictions
+- Standard GPU Spaces provide full compatibility without restrictions
+- Incorporates all lessons learned from ZeroGPU investigation
+- Uses proven dependency versions and configurations
+- No defensive imports needed (but can be added for robustness)
 
-Please implement this step by step, ensuring each change is properly tested before moving to the next step.
+Please implement this step by step, testing each component before moving to the next step.
 ```
 
 ---
 
 ## Implementation Checklist
 
-- [ ] Update README.md frontmatter and content
-- [ ] Remove ZeroGPU decorators from app.py
-- [ ] Clean requirements.txt without ZeroGPU limitations
-- [ ] Update packages.txt with comprehensive dependencies
-- [ ] Remove defensive imports from all Python files
-- [ ] Update docs/CLAUDE.md
-- [ ] Test full chemistry stack functionality
-- [ ] Verify API endpoint functionality
-- [ ] Deploy and validate on standard GPU Spaces
-- [ ] Update project documentation
+- [ ] Examine clean fork state and current structure
+- [ ] Create README.md with Standard GPU configuration
+- [ ] Create app.py for Gradio interface (no ZeroGPU decorators)
+- [ ] Create requirements.txt with proven dependency versions
+- [ ] Create packages.txt with comprehensive system dependencies
+- [ ] Verify all PolyID Python files use direct imports
+- [ ] Test locally if possible
+- [ ] Deploy to Standard GPU Spaces
+- [ ] Validate full chemistry stack functionality
+- [ ] Test polymer property prediction pipeline
 
 ## Expected Results
 
 - **Full chemistry package support**: RDKit, NFP, m2p working correctly
-- **Real polymer predictions**: No more mock mode fallbacks
-- **Reliable deployment**: No recurring dependency failures
-- **Complete functionality**: All PolyID features working as intended
+- **Real polymer predictions**: Complete PolyID functionality
+- **Reliable deployment**: No dependency installation failures
+- **Clean implementation**: Built from scratch with proven patterns
 
 ## Troubleshooting
 
 If issues arise:
 1. Check Hugging Face Spaces logs for specific errors
 2. Verify standard GPU hardware is selected in Spaces settings
-3. Ensure all packages in requirements.txt are compatible with Python 3.10
-4. Review packages.txt for missing system dependencies
+3. Refer to proven dependency versions from our investigation
+4. Review packages.txt against comprehensive system dependencies
 
 ---
 
 **Branch**: `standard-gpu-deployment`
-**Approach**: Clean migration from ZeroGPU to Standard GPU Spaces
-**Priority**: Full functionality over cost optimization
+**Approach**: Fresh implementation for Standard GPU Spaces
+**Priority**: Full functionality using proven configurations

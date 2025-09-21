@@ -2,13 +2,15 @@
 
 ## Implementation Overview
 
-**Goal**: Deploy PolyID using a custom Docker container with pre-installed chemistry packages to bypass Hugging Face Spaces dependency installation limitations entirely.
+**Goal**: Implement PolyID using a custom Docker container from clean fork state, incorporating insights from our ZeroGPU investigation to create a bulletproof deployment with pre-installed chemistry packages.
+
+**Approach**: Start fresh and build a container that pre-installs all dependencies, ensuring 100% reliability regardless of any Hugging Face Spaces limitations.
 
 **Key Benefits**:
-- Reproducible environment with all dependencies pre-installed
-- Bypasses any Spaces installation restrictions
+- Bulletproof deployment with guaranteed dependency availability
+- Incorporates all lessons learned from dependency investigation
+- Reproducible environment across any platform
 - Most reliable approach for complex chemistry stack
-- Complete control over the runtime environment
 
 ---
 
@@ -17,31 +19,53 @@
 Copy and paste this entire prompt to Claude Code when working on the `container-deployment` branch:
 
 ```
-I need you to implement Option 3: Custom Container Deployment for the PolyID project. This involves creating a custom Docker container with all chemistry dependencies pre-installed to bypass Hugging Face Spaces installation limitations.
+I need you to implement Option 3: Custom Container Deployment for the PolyID project. This is a FRESH implementation starting from the clean fork state, building a Docker container that incorporates all insights gained from our ZeroGPU compatibility investigation.
 
 ## Context
 
-PolyID is a polymer property prediction application requiring complex chemistry packages (RDKit, NFP, m2p) that have compatibility issues with Hugging Face Spaces environments. The analysis is documented in `docs/ZeroGPU_Compatibility_Analysis.md`.
+PolyID is a polymer property prediction application requiring complex chemistry packages (RDKit, NFP, m2p). Our investigation revealed significant compatibility issues with Hugging Face Spaces environments. The complete analysis is in `docs/ZeroGPU_Compatibility_Analysis.md`.
 
-The container approach pre-builds all dependencies, ensuring a reliable, reproducible environment that works regardless of Spaces limitations.
+**Important**: You are starting from a CLEAN FORK STATE - not modifying existing configurations. The branch has been reset to the original fork point before any deployment attempts.
+
+## Insights Gained from Investigation
+
+### Proven System Dependencies (for container):
+```
+libboost-dev, libcairo2-dev, libeigen3-dev, libgomp1, python3-dev, build-essential
+cmake, pkg-config, libboost-python-dev, libboost-serialization-dev,
+libboost-system-dev, libboost-thread-dev
+libxrender1, libfontconfig1, libice6, libsm6, libxext6, libxrandr2, libxss1
+```
+
+### Optimal Package Versions (Latest Stable):
+- `rdkit>=2024.3.1` - Latest RDKit with Python 3.12 support
+- `nfp>=0.4.0` - Latest neural fingerprint with modern TensorFlow
+- `shortuuid>=1.0.11` - Latest UUID generation
+- `gradio>=5.48.0` - Latest Gradio with all container features
+- `tensorflow>=2.16.0` - Latest stable TensorFlow
+
+### Container Advantages:
+- Use Python 3.12 for best performance and latest features
+- Pre-compile all chemistry packages during build
+- Eliminate runtime dependency installation completely
+- Guarantee exact environment reproducibility across platforms
 
 ## Current State
-
-- Dependencies fail in both ZeroGPU and potentially standard Spaces
-- Chemistry packages require complex system-level dependencies
-- Need bulletproof solution that guarantees package availability
+- Clean fork state with original PolyID code
+- No previous deployment configurations
+- Need to create everything for container deployment from scratch
 
 ## Implementation Requirements
 
-### 1. Create Dockerfile
+### 1. Create Dockerfile from Scratch
 
-Create a multi-stage Dockerfile that pre-installs all chemistry packages:
+Create a multi-stage Dockerfile incorporating all lessons learned from our investigation:
 
 ```dockerfile
-# PolyID Custom Container
-FROM python:3.10-slim as base
+# PolyID Custom Container - Optimized with Python 3.12
+FROM python:3.12-slim as base
 
-# Install system dependencies
+# Install comprehensive system dependencies (learned from investigation)
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -72,7 +96,7 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies with proven versions
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -83,7 +107,7 @@ COPY . .
 RUN useradd -m -u 1000 user
 USER user
 
-# Expose port
+# Expose port for Gradio
 EXPOSE 7860
 
 # Health check
@@ -91,104 +115,101 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:7860/ || exit 1
 
 # Run the application
-CMD ["python", "app.py", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["python", "app.py"]
 ```
 
-### 2. Update README.md for Container Deployment
+### 2. Create README.md for Container Deployment
 
-Change the frontmatter to:
+Create README.md configured for Docker SDK:
+
 ```yaml
+---
 title: PolyID
 emoji: 🧬
 colorFrom: blue
 colorTo: green
 sdk: docker
 app_port: 7860
+license: bsd-3-clause
+short_description: PolyID polymer property prediction using pre-built container
+---
 ```
 
-Add container-specific documentation explaining the Docker approach.
+Include documentation explaining this is a container-based deployment with pre-installed chemistry packages.
 
-### 3. Create Container-Optimized requirements.txt
+### 3. Create requirements.txt with Proven Versions
+
+Create requirements.txt using all the versions we learned work:
 
 ```txt
-# PolyID Container Dependencies
-# Pre-installed in Docker environment for reliability
+# PolyID Container Dependencies - Latest Stable for Python 3.12
+# Optimized versions for best performance and features
 
-# Web interface and deployment
-gradio>=5.46.0
+# Web interface
+gradio>=5.48.0
 
 # Machine learning frameworks
-torch>=2.1.0
-tensorflow>=2.12.0
-transformers>=4.20.0
+torch>=2.4.0
+tensorflow>=2.16.0
+transformers>=4.45.0
 
 # Scientific computing
-numpy>=1.21.0
-pandas>=1.3.0
-scikit-learn>=1.0.0
-scipy>=1.7.0
-networkx>=2.6.0
+numpy>=1.26.0
+pandas>=2.1.0
+scikit-learn>=1.4.0
+scipy>=1.11.0
+networkx>=3.2.0
 
 # Utilities
-tqdm>=4.60.0
-shortuuid>=1.0.0
+tqdm>=4.66.0
+shortuuid>=1.0.11
 
-# Chemistry and molecular packages (pre-built in container)
-rdkit>=2023.9.1
-nfp>=0.3.0
-m2p>=0.1.0
+# Chemistry and molecular packages (latest stable versions)
+rdkit>=2024.3.1
+nfp>=0.4.0
+m2p>=0.2.0
 
-# Optional monitoring and debugging
-psutil
+# Container utilities
+psutil>=5.9.0
 ```
 
-### 4. Update app.py for Container Environment
+### 4. Create app.py for Container Environment
 
-Modify app.py to work optimally in container:
+Create the main Gradio application optimized for container deployment:
 
-**Add container-specific configurations:**
+**Core setup:**
 ```python
-import os
 import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Container environment detection
-def is_container():
-    return os.path.exists('/.dockerenv') or os.environ.get('CONTAINER') == 'true'
+from polyid import MultiModel, SingleModel
+import gradio as gr
 
-# Configure for container deployment
-if is_container():
-    print("Running in container environment")
-    # Container-specific optimizations
-```
+# Container-optimized configuration
+def create_interface():
+    # Build Gradio interface for polymer property prediction
+    # Include all PolyID functionality
+    pass
 
-**Update Gradio interface:**
-```python
-# Launch configuration for container
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--host", default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=7860)
-    parser.add_argument("--mock", action="store_true")
-    args = parser.parse_args()
-
     interface = create_interface()
     interface.launch(
-        server_name=args.host,
-        server_port=args.port,
+        server_name="0.0.0.0",
+        server_port=7860,
         share=False
     )
 ```
 
-### 5. Create .dockerignore
+### 5. Create .dockerignore for Optimized Builds
 
-Create `.dockerignore` to optimize build:
+Create `.dockerignore` to exclude unnecessary files:
 ```
 .git
 .github
 *.md
 docs/
-examples/
+examples/notebooks/
 tests/
 .venv/
 __pycache__/
@@ -198,172 +219,171 @@ __pycache__/
 .pytest_cache/
 .coverage
 .env
+stale-zerogpu-attempts
 ```
 
-### 6. Remove Defensive Imports
+### 6. Use Direct Package Imports (No Defensive Needed)
 
-Since the container pre-installs all packages, remove defensive imports and mocks:
-- Direct imports for all chemistry packages
-- Remove try/catch blocks
-- Remove mock fallback classes
-- Restore full functionality without safety nets
+Since the container pre-installs all packages, use direct imports:
 
-### 7. Create Container Testing Script
+**In all PolyID Python files:**
+```python
+import rdkit
+import nfp
+from nfp import EdgeUpdate, GlobalUpdate, NodeUpdate, masked_mean_absolute_error
+import shortuuid
+```
 
-Create `scripts/container/test_container.py`:
+**No try/catch blocks needed** - container guarantees all packages are available.
+
+### 7. Create Container Testing Script (Optional)
+
+Create `test_container_imports.py` for validation:
 ```python
 #!/usr/bin/env python3
-"""Test script for container deployment validation."""
+"""Validate container has all required packages."""
 
-def test_imports():
-    """Test all critical package imports."""
+def test_all_imports():
+    """Test critical package imports in container."""
     try:
         import rdkit
-        print("✓ RDKit imported successfully")
+        print("✓ RDKit available")
 
         import nfp
-        print("✓ NFP imported successfully")
+        print("✓ NFP available")
 
         import m2p
-        print("✓ m2p imported successfully")
+        print("✓ m2p available")
 
         from polyid import MultiModel
-        print("✓ PolyID package imported successfully")
+        print("✓ PolyID package available")
+
+        import gradio
+        print("✓ Gradio available")
 
         return True
     except ImportError as e:
         print(f"✗ Import failed: {e}")
         return False
 
-def test_functionality():
-    """Test core PolyID functionality."""
-    # Add basic functionality tests
-    pass
-
 if __name__ == "__main__":
-    print("Container Deployment Tests")
-    print("=" * 30)
-
-    if test_imports():
-        print("\n✓ All imports successful")
-        test_functionality()
+    print("Container Import Tests")
+    print("=" * 25)
+    if test_all_imports():
+        print("\n✅ All packages successfully installed in container")
     else:
-        print("\n✗ Import tests failed")
+        print("\n❌ Container missing required packages")
         exit(1)
 ```
 
-### 8. Update Documentation
-
-Update `docs/CLAUDE.md` with container-specific guidance:
-- Docker build and run commands
-- Container development workflow
-- Debugging container issues
-- Container-specific testing
-
 ## Container Development Workflow
 
-### Building the Container
+### Local Development and Testing
 ```bash
-# Build the container
+# Build the container locally
 docker build -t polyid:latest .
 
-# Test locally
+# Test the container locally
 docker run -p 7860:7860 polyid:latest
 
-# Test with mock mode
-docker run -p 7860:7860 polyid:latest python app.py --mock
+# Access at http://localhost:7860
 ```
 
 ### Deployment to Hugging Face Spaces
 
-1. Configure Space for Docker SDK
-2. Ensure Dockerfile is in root directory
-3. Push to repository - HF will build container automatically
-4. Monitor build logs for any issues
+1. Ensure Dockerfile is in root directory
+2. Configure Space for Docker SDK (in README.md)
+3. Push to repository - HF automatically builds container
+4. Monitor build logs in Spaces interface
 
 ## Success Criteria
 
-1. **Container builds successfully** with all dependencies
-2. **All chemistry packages work** in container environment
-3. **Reproducible deployments** across any compatible environment
-4. **No dependency installation failures** during runtime
-5. **Full PolyID functionality** available in container
+1. **Container builds successfully** with all chemistry packages pre-installed
+2. **All dependencies work** without runtime installation
+3. **Reproducible deployments** across any environment
+4. **Full PolyID functionality** with guaranteed package availability
+5. **Clean container logs** showing successful startup
 
 ## Implementation Steps
 
-1. Create Dockerfile with multi-stage build
-2. Update README.md for Docker SDK
-3. Optimize requirements.txt for container
-4. Modify app.py for container deployment
-5. Create .dockerignore for efficient builds
-6. Remove defensive imports - restore direct package usage
-7. Create container testing scripts
-8. Update documentation with container workflow
-9. Test locally with Docker
-10. Deploy to Hugging Face Spaces with Docker SDK
+1. Start by examining the clean fork state
+2. Create Dockerfile with proven system dependencies
+3. Create README.md configured for Docker SDK
+4. Create requirements.txt with tested package versions
+5. Create app.py optimized for container environment
+6. Create .dockerignore for efficient builds
+7. Use direct imports (no defensive imports needed)
+8. Test container build locally
+9. Deploy to Hugging Face Spaces with appropriate hardware
+10. Validate full functionality
+
+### Hardware Selection for Container Deployment
+
+**Recommended Options for PolyID Container:**
+- **CPU Basic**: Free tier for testing container builds
+- **Nvidia T4 - small** ($0.40/hour): Good for light production use
+- **Nvidia A10G - small** ($1.00/hour): Recommended for production workloads
+- **Nvidia A100 - large** ($4.00/hour): Best performance for heavy usage
+
+**Container Benefits:**
+- Works on any hardware tier since dependencies are pre-installed
+- CPU-only deployment possible for testing
+- GPU provides acceleration for model inference
 
 ## Notes
 
-- **Most reliable approach** for complex dependency stacks
-- **Reproducible environment** across development and production
-- **Bypasses all Spaces installation limitations**
-- **May have longer cold start times** due to container initialization
-- **Requires Docker expertise** for troubleshooting
+- **Most reliable approach** for complex chemistry dependency stacks
+- **Uses Python 3.12** for best performance and latest features
+- **Latest stable packages** for optimal functionality
+- **Bulletproof deployment** with guaranteed dependency availability
+- **Reproducible environment** eliminates "works on my machine" issues
+- **Container portability** allows deployment anywhere Docker runs
 
-## Troubleshooting
-
-If container issues arise:
-1. Check Docker build logs for dependency installation errors
-2. Test locally with `docker run` before deploying
-3. Verify all system dependencies are in Dockerfile
-4. Check container resource requirements vs Spaces limits
-5. Monitor Hugging Face Spaces container logs
-
-Please implement this step by step, testing the container locally before deploying to Hugging Face Spaces.
+Please implement this step by step, building and testing the container locally before deploying to Hugging Face Spaces.
 ```
 
 ---
 
 ## Implementation Checklist
 
-- [ ] Create multi-stage Dockerfile with chemistry packages
-- [ ] Update README.md for Docker SDK configuration
-- [ ] Create container-optimized requirements.txt
-- [ ] Modify app.py for container environment
+- [ ] Examine clean fork state and structure
+- [ ] Create Dockerfile with proven system dependencies
+- [ ] Create README.md configured for Docker SDK
+- [ ] Create requirements.txt with tested package versions
+- [ ] Create app.py optimized for container
 - [ ] Create .dockerignore for build optimization
-- [ ] Remove defensive imports and restore direct package usage
-- [ ] Create container testing scripts
-- [ ] Update docs/CLAUDE.md with container workflow
-- [ ] Test container build locally
-- [ ] Test container functionality locally
+- [ ] Use direct imports throughout PolyID code
+- [ ] Create container testing script (optional)
+- [ ] Build container locally and test
 - [ ] Deploy to HF Spaces with Docker SDK
-- [ ] Validate deployed container functionality
+- [ ] Validate chemistry stack functionality
+- [ ] Test full polymer property prediction
 
 ## Expected Results
 
-- **Bulletproof deployment**: All dependencies guaranteed to work
-- **Reproducible environment**: Same behavior across all deployments
-- **No installation failures**: Dependencies pre-built in container
-- **Full chemistry stack**: RDKit, NFP, m2p working perfectly
-- **Container portability**: Can run anywhere Docker is supported
+- **Bulletproof deployment**: All dependencies guaranteed available
+- **Reproducible environment**: Identical behavior every deployment
+- **No installation failures**: Chemistry packages pre-compiled in container
+- **Full functionality**: Complete PolyID capabilities working
+- **Container portability**: Can deploy to any Docker-compatible platform
 
 ## Advantages of Container Approach
 
-1. **Reliability**: Eliminates dependency installation uncertainty
-2. **Reproducibility**: Exact same environment every time
-3. **Portability**: Works on any Docker-compatible platform
-4. **Control**: Complete control over runtime environment
-5. **Debugging**: Can test exact deployment environment locally
+1. **Maximum Reliability**: Eliminates all dependency uncertainty
+2. **Investigation Insights**: Uses proven package versions and system deps
+3. **Reproducibility**: Exact same environment guaranteed
+4. **Debugging**: Can test deployment environment locally
+5. **Portability**: Works anywhere Docker is supported
 
 ## Considerations
 
-- **Build time**: Initial container build may take longer
-- **Image size**: Container may be larger than standard deployment
-- **Cold starts**: Container initialization may add startup time
-- **Complexity**: Requires Docker knowledge for maintenance
+- **Build time**: Container build includes chemistry package compilation
+- **Learning curve**: Requires basic Docker knowledge
+- **Cold starts**: Container initialization adds startup time
+- **Image size**: Larger than standard deployment due to pre-installed packages
 
 ---
 
 **Branch**: `container-deployment`
-**Approach**: Pre-built Docker container with all dependencies
-**Priority**: Maximum reliability and reproducibility
+**Approach**: Fresh container implementation with proven configurations
+**Priority**: Maximum reliability using investigation insights
