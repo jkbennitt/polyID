@@ -38,13 +38,15 @@ polyID/
 
 ### Dependencies
 - **Install requirements**: `pip install -r requirements.txt`
-- **Python version**: 3.13 (updated for compatibility, removed `tensorflow-addons`, `mordred`)
-- **Key packages**: `rdkit-pypi` (required for molecular fingerprinting), `gradio`, `spaces`, `torch`
+- **Python version**: 3.10.13 (ZeroGPU requirement - fixed version for GPU acceleration)
+- **Key packages**: `rdkit` (modern package for molecular fingerprinting), `gradio`, `spaces`, `torch`
 
 ## Architecture Overview
 
 ### Core Structure
 This is a **PolyID fork** adapted for Hugging Face Spaces deployment with ZeroGPU acceleration. The original PolyID provides polymer property prediction using graph neural networks.
+
+**Important**: ZeroGPU requires Python 3.10.13 exactly - this is a hard constraint for GPU access on HF Spaces.
 
 ### Key Components
 

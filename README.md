@@ -4,7 +4,9 @@ emoji: 🧬
 colorFrom: blue
 colorTo: green
 sdk: gradio
+sdk_version: "5.46.0"
 app_file: app.py
+python_version: "3.10.13"
 pinned: false
 license: bsd-3-clause
 short_description: PolyID polymer property prediction with ZeroGPU acceleration

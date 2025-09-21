@@ -1,5 +1,6 @@
-gradio==5.46.0
-spaces
+# FORCE REBUILD - Python 3.10.13 ZeroGPU - 2025-09-20-15:42:33
+gradio>=5.46.0
+spaces>=0.41.0
 torch>=2.1.0
 transformers
 numpy
@@ -12,4 +13,5 @@ nfp
 tqdm
 shortuuid
 m2p
-rdkit-pypi
+# RDKit exact version for Python 3.10.13 compatibility
+rdkit==2024.3.1

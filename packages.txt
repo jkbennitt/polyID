@@ -4,3 +4,17 @@ libeigen3-dev
 libgomp1
 python3-dev
 build-essential
+libxrender1
+libfontconfig1
+libice6
+libsm6
+libxext6
+libxrandr2
+libxss1
+# Additional RDKit system dependencies for Python 3.10.13
+cmake
+libboost-python-dev
+libboost-serialization-dev
+libboost-system-dev
+libboost-thread-dev
+pkg-config

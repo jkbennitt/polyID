@@ -12,9 +12,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Push to HF Spaces
-        uses: huggingface_hub_action@main
         with:
-          repo_id: jkbennitt/polyid-private  
-          local_dir: .
-          token: ${{ secrets.HF_TOKEN }}
+          fetch-depth: 0
+          lfs: true
+      - name: Push to HF Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: git push https://jkbennitt:$HF_TOKEN@huggingface.co/spaces/jkbennitt/polyid-private main
