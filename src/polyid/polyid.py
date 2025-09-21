@@ -36,7 +36,19 @@ except ImportError:
 
 import pandas as pd
 import numpy as np
-import shortuuid
+try:
+    import shortuuid
+    SHORTUUID_AVAILABLE = True
+except ImportError:
+    print("Warning: shortuuid not available. Using fallback UUID generation.")
+    import uuid
+    class MockShortUUID:
+        @staticmethod
+        def uuid():
+            return str(uuid.uuid4())[:8]
+    shortuuid = MockShortUUID()
+    SHORTUUID_AVAILABLE = False
+
 import tensorflow as tf
 from keras.models import load_model as load_keras_model
 from sklearn import model_selection
