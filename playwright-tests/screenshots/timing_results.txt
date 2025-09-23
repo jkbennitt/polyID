@@ -1,0 +1,2 @@
+Page load time: 0.57s
+Ready time: 5.58s
