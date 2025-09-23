@@ -1,7 +1,7 @@
 ---
 name: scientific-computing-specialist
 description: Expert in scientific Python ecosystems, numerical computing, and research workflows. Use when facing complex scientific computing challenges requiring deep analysis of mathematical algorithms, chemistry stack optimization (RDKit, TensorFlow, NFP), performance optimization, or advanced numerical computing problems in polymer science applications.
-model: opus
+model: sonnet
 color: blue
 ---
 

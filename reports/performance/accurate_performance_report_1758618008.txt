@@ -1,0 +1,40 @@
+================================================================================
+POLYID HF SPACE PERFORMANCE ANALYSIS REPORT
+================================================================================
+Timestamp: 2025-09-23T04:59:29.289213
+Space URL: https://jkbennitt-polyid-private.hf.space
+API Function Index: 1
+
+INTERFACE PERFORMANCE
+----------------------------------------
+Status: OK
+Load Time: 0.074s
+Content Size: 25,913 bytes
+Components Detected:
+  Gradio: YES
+  Polyid: YES
+  Rdkit: YES
+  Tensorflow: NO
+  System_status: YES
+
+MULTI-PROPERTY PERFORMANCE
+----------------------------------------
+
+STRESS TEST RESULTS
+----------------------------------------
+Large Molecule (152 chars): FAILED
+All Properties (4 props): FAILED
+Rapid Sequential: 0/5 successful
+  Success Rate: 0.0%
+
+PERFORMANCE ASSESSMENT & RECOMMENDATIONS
+--------------------------------------------------------------------------------
+
+OPTIMIZATION RECOMMENDATIONS:
+• Implement request caching for repeated SMILES
+• Monitor memory usage during peak loads
+• Consider model optimization for faster inference
+• Implement request queuing for high concurrency
+• Add monitoring for error patterns and failures
+
+================================================================================

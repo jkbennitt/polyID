@@ -388,7 +388,7 @@ def create_prediction_plot(predictions: Dict) -> plt.Figure:
     plt.tight_layout()
     return fig
 
-def main_prediction_interface(smiles: str, properties: List[str]) -> Tuple[str, str, str, plt.Figure]:
+def main_prediction_interface(smiles: str, properties: List[str]) -> Tuple[str, str, str, Optional[plt.Figure]]:
     """
     Main interface function that combines all analyses
 
@@ -402,7 +402,7 @@ def main_prediction_interface(smiles: str, properties: List[str]) -> Tuple[str, 
     # Validate SMILES
     is_valid, validation_msg = validate_smiles(smiles)
     if not is_valid:
-        return validation_msg, "", "", plt.figure()
+        return validation_msg, "", "", None
 
     # Calculate molecular properties
     mol_props = calculate_molecular_properties(smiles)
@@ -414,12 +414,12 @@ def main_prediction_interface(smiles: str, properties: List[str]) -> Tuple[str, 
     # Predict polymer properties
     if not properties:
         predictions_str = "Please select properties to predict"
-        plot = plt.figure()
+        plot = None
     else:
         predictions = predict_polymer_properties(smiles, properties)
         if "error" in predictions:
             predictions_str = f"Error: {predictions['error']}"
-            plot = plt.figure()
+            plot = None
         else:
             predictions_list = []
             for prop, result in predictions.items():

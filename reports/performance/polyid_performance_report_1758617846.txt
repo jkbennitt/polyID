@@ -1,0 +1,43 @@
+================================================================================
+POLYID HF SPACE PERFORMANCE ANALYSIS REPORT
+================================================================================
+Timestamp: 2025-09-23T04:57:26.893048
+Space URL: https://jkbennitt-polyid-private.hf.space
+
+PERFORMANCE SUMMARY
+--------------------------------------------------------------------------------
+Space Accessibility: OK
+  Response Time: 0.553s
+Average Prediction Latency: 0.522s
+  Range: 0.494s - 0.559s
+Cold Start Performance: 0.593s
+Warm State Performance: 0.589s
+  Speedup Factor: 1.01x
+
+DETAILED TEST RESULTS
+--------------------------------------------------------------------------------
+
+Single Prediction Latency by Complexity:
+  Simple - polyethylene: 0.516s
+  Simple - polypropylene: 0.531s
+  Simple - polystyrene: 0.559s
+  Medium - pmma: 0.500s
+  Medium - pla: 0.498s
+  Medium - pvc: 0.494s
+  Complex - pet: 0.550s
+  Complex - polycarbonate: 0.528s
+  Complex - polyimide: 0.520s
+
+Complex Molecule Handling:
+  Success Rate: 0.0%
+
+PERFORMANCE RECOMMENDATIONS
+--------------------------------------------------------------------------------
+• Good prediction latency performance
+• Low concurrent throughput - investigate bottlenecks
+• Monitor memory usage during peak loads
+• Implement request queuing for high concurrency
+• Consider batch processing for multiple predictions
+• Optimize model loading for faster startup
+
+================================================================================

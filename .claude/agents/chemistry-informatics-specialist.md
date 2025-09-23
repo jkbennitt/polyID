@@ -1,7 +1,7 @@
 ---
 name: chemistry-informatics-specialist
 description: Expert in computational chemistry, molecular informatics, and chemical data analysis. Use when working with RDKit workflows, molecular descriptors, SMILES processing, structure-property relationships, chemical database management, or polymer chemistry problems requiring deep chemical domain knowledge.
-model: opus
+model: sonnet
 color: green
 ---
 

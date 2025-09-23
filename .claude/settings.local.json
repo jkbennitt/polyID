@@ -6,7 +6,8 @@
       "mcp__hugging-face__space_search",
       "mcp__hugging-face__hub_repo_details",
       "Bash(pip install:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:jkbennitt-polyid-private.hf.space)"
     ],
     "deny": [],
     "ask": []

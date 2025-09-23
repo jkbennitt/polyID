@@ -1,0 +1,139 @@
+{
+  "timestamp": "2025-09-23T04:57:26.893048",
+  "space_url": "https://jkbennitt-polyid-private.hf.space",
+  "test_results": {
+    "availability": {
+      "status": "success",
+      "http_status": 200,
+      "response_time_s": 0.5526123046875,
+      "content_length": 25913,
+      "components_found": {
+        "rdkit": true,
+        "nfp": true,
+        "polyid": true,
+        "tensorflow": false,
+        "gradio": true
+      }
+    },
+    "single_prediction_latency": {
+      "total_tests": 9,
+      "overall_avg_latency_s": 0.5218465593126085,
+      "overall_min_latency_s": 0.49366966883341473,
+      "overall_max_latency_s": 0.5592342217763265,
+      "overall_std_latency_s": 0.022762584773625482,
+      "detailed_results": [
+        {
+          "polymer": "polyethylene",
+          "complexity": "simple",
+          "smiles": "CC",
+          "avg_latency_s": 0.5159990787506104,
+          "min_latency_s": 0.509040117263794,
+          "max_latency_s": 0.5282120704650879,
+          "std_latency_s": 0.010611058976984057,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "polypropylene",
+          "complexity": "simple",
+          "smiles": "CC(C)",
+          "avg_latency_s": 0.5306712786356608,
+          "min_latency_s": 0.5002119541168213,
+          "max_latency_s": 0.557776689529419,
+          "std_latency_s": 0.028928554115855386,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "polystyrene",
+          "complexity": "simple",
+          "smiles": "CC(c1ccccc1)",
+          "avg_latency_s": 0.5592342217763265,
+          "min_latency_s": 0.5084271430969238,
+          "max_latency_s": 0.6246743202209473,
+          "std_latency_s": 0.05948903678757093,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "pmma",
+          "complexity": "medium",
+          "smiles": "CC(C)(C(=O)OC)",
+          "avg_latency_s": 0.5002854665120443,
+          "min_latency_s": 0.48022890090942383,
+          "max_latency_s": 0.5307350158691406,
+          "std_latency_s": 0.026809093523870446,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "pla",
+          "complexity": "medium",
+          "smiles": "CC(O)C(=O)",
+          "avg_latency_s": 0.4984577496846517,
+          "min_latency_s": 0.4839487075805664,
+          "max_latency_s": 0.5106091499328613,
+          "std_latency_s": 0.013485683258383417,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "pvc",
+          "complexity": "medium",
+          "smiles": "CC(Cl)",
+          "avg_latency_s": 0.49366966883341473,
+          "min_latency_s": 0.4827303886413574,
+          "max_latency_s": 0.511587381362915,
+          "std_latency_s": 0.015643062220972285,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "pet",
+          "complexity": "complex",
+          "smiles": "COC(=O)c1ccc(C(=O)O)cc1.OCCO",
+          "avg_latency_s": 0.5499372482299805,
+          "min_latency_s": 0.4852876663208008,
+          "max_latency_s": 0.5877671241760254,
+          "std_latency_s": 0.05625817533067478,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "polycarbonate",
+          "complexity": "complex",
+          "smiles": "CC(C)(c1ccc(O)cc1)c1ccc(O)cc1.O=C(Cl)Cl",
+          "avg_latency_s": 0.5280113220214844,
+          "min_latency_s": 0.5106234550476074,
+          "max_latency_s": 0.561683177947998,
+          "std_latency_s": 0.029165905571803607,
+          "success_rate": 100.0
+        },
+        {
+          "polymer": "polyimide",
+          "complexity": "complex",
+          "smiles": "c1ccc2c(c1)C(=O)N(c1ccc(C(=O)c3ccc(N4C(=O)c5ccccc5C4=O)cc3)cc1)C2=O",
+          "avg_latency_s": 0.5203529993693033,
+          "min_latency_s": 0.4788341522216797,
+          "max_latency_s": 0.6003017425537109,
+          "std_latency_s": 0.06925486666882014,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    "concurrent_throughput": {
+      "error": "No successful concurrent predictions",
+      "total_requests": 9,
+      "total_time_s": 2.3951632976531982
+    },
+    "complex_molecule_handling": {
+      "error": "No successful complex polymer predictions",
+      "total_complex_polymers": 3
+    },
+    "startup_performance": {
+      "cold_start_latency_s": 0.5926649570465088,
+      "cold_start_success": false,
+      "warm_state_avg_latency_s": 0.5888027350107828,
+      "warm_state_latencies": [
+        0.5835895538330078,
+        0.5219719409942627,
+        0.6608467102050781
+      ],
+      "speedup_factor": 1.0065594498905566,
+      "optimization_effective": false
+    }
+  }
+}

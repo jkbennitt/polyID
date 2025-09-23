@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-09-23T04:59:29.289213",
+  "space_url": "https://jkbennitt-polyid-private.hf.space",
+  "api_info": {
+    "fn_index": 1,
+    "session_hash": "session_1758617969"
+  },
+  "interface_response": {
+    "status": "success",
+    "load_time_s": 0.07423925399780273,
+    "http_status": 200,
+    "content_size_bytes": 25913,
+    "components_detected": {
+      "gradio": true,
+      "polyid": true,
+      "rdkit": true,
+      "tensorflow": false,
+      "system_status": true
+    }
+  },
+  "prediction_latency": {
+    "error": "No successful predictions completed"
+  },
+  "multi_property_performance": {
+    "multi_property_tests": []
+  },
+  "concurrent_performance": {
+    "error": "No successful concurrent predictions",
+    "total_time_s": 0.7109987735748291,
+    "total_requests": 3
+  },
+  "stress_limits": {
+    "large_molecule": {
+      "smiles_length": 152,
+      "success": false,
+      "latency_s": 0.03866434097290039,
+      "error": "HTTP 500"
+    },
+    "all_properties": {
+      "num_properties": 4,
+      "success": false,
+      "latency_s": 0.041741132736206055,
+      "error": "HTTP 500"
+    },
+    "rapid_sequential": {
+      "total_requests": 5,
+      "successful_requests": 0,
+      "success_rate": 0.0,
+      "avg_latency_s": 0
+    }
+  }
+}
