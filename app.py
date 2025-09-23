@@ -610,6 +610,19 @@ def run_startup_diagnostics():
     print(f"Working Directory: {os.getcwd()}")
     print(f"Python Path: {sys.path[:3]}...")
 
+    # Git branch detection for HF Spaces
+    try:
+        import subprocess
+        result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+                              capture_output=True, text=True, cwd=os.getcwd())
+        if result.returncode == 0:
+            branch = result.stdout.strip()
+            print(f"Git Branch: {branch}")
+        else:
+            print("Git Branch: [Unable to detect]")
+    except Exception:
+        print("Git Branch: [Git not available]")
+
     # TensorFlow GPU check
     try:
         import tensorflow as tf
