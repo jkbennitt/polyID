@@ -1,0 +1,487 @@
+{
+  "test_timestamp": "2025-09-23T08:21:14.816340",
+  "tests": {
+    "health_endpoint": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.866576",
+      "status_code": 200,
+      "response_time": 2.05,
+      "response_size": 182,
+      "health_data": {
+        "status": "healthy",
+        "timestamp": "2025-09-23T08:21:16.865036",
+        "components": {
+          "rdkit": "available",
+          "nfp": "unavailable",
+          "polyid": "mock_mode",
+          "tensorflow": "unavailable"
+        },
+        "version": "1.0.0"
+      },
+      "components_status": {
+        "rdkit": "available",
+        "nfp": "unavailable",
+        "polyid": "mock_mode",
+        "tensorflow": "unavailable"
+      }
+    },
+    "single_predict_smiles_1_CCO": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.869877",
+      "smiles": "CCO",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 723,
+      "response_data": {
+        "polymer_id": "POLY-FOFONYFT",
+        "smiles": "CCO",
+        "properties": {
+          "glass_transition_temp": 67.1,
+          "melting_temp": 213.2,
+          "decomposition_temp": 362.3,
+          "thermal_stability_score": 0.94,
+          "tensile_strength": 48.0,
+          "elongation_at_break": 128.5,
+          "youngs_modulus": 2.5,
+          "flexibility_score": 0.753,
+          "water_resistance": 0.927,
+          "acid_resistance": 0.89,
+          "base_resistance": 0.883,
+          "solvent_resistance": 0.421,
+          "uv_stability": 7141.0,
+          "oxygen_permeability": 22.2,
+          "moisture_vapor_transmission": 14.9,
+          "biodegradability": 0.265,
+          "hydrophane_opal_compatibility": 0.828,
+          "pyrite_compatibility": 0.914,
+          "fossil_compatibility": 0.714,
+          "meteorite_compatibility": 0.575,
+          "analysis_time": 0.964,
+          "confidence_score": 0.925
+        },
+        "timestamp": "2025-09-23T08:21:16.868876",
+        "processing_time_seconds": 0.001
+      },
+      "properties_count": 22,
+      "processing_time": 0.001
+    },
+    "single_predict_smiles_2_CCCCOC_OC_C": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.872754",
+      "smiles": "CC(C)(C)OC(=O)C=C",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 737,
+      "response_data": {
+        "polymer_id": "POLY-MMRJBRWQ",
+        "smiles": "CC(C)(C)OC(=O)C=C",
+        "properties": {
+          "glass_transition_temp": 90.9,
+          "melting_temp": 100.2,
+          "decomposition_temp": 408.1,
+          "thermal_stability_score": 0.608,
+          "tensile_strength": 48.5,
+          "elongation_at_break": 188.2,
+          "youngs_modulus": 1.6,
+          "flexibility_score": 0.765,
+          "water_resistance": 0.731,
+          "acid_resistance": 0.559,
+          "base_resistance": 0.711,
+          "solvent_resistance": 0.812,
+          "uv_stability": 6517.0,
+          "oxygen_permeability": 39.5,
+          "moisture_vapor_transmission": 16.0,
+          "biodegradability": 0.463,
+          "hydrophane_opal_compatibility": 0.727,
+          "pyrite_compatibility": 0.837,
+          "fossil_compatibility": 0.675,
+          "meteorite_compatibility": 0.815,
+          "analysis_time": 1.307,
+          "confidence_score": 0.783
+        },
+        "timestamp": "2025-09-23T08:21:16.871853",
+        "processing_time_seconds": 0.0
+      },
+      "properties_count": 22,
+      "processing_time": 0.0
+    },
+    "single_predict_smiles_3_CC_CCC_OOC": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.875567",
+      "smiles": "CC=C(C)C(=O)OC",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 732,
+      "response_data": {
+        "polymer_id": "POLY-KXXQI6LK",
+        "smiles": "CC=C(C)C(=O)OC",
+        "properties": {
+          "glass_transition_temp": 65.7,
+          "melting_temp": 99.4,
+          "decomposition_temp": 296.4,
+          "thermal_stability_score": 0.688,
+          "tensile_strength": 44.3,
+          "elongation_at_break": 123.6,
+          "youngs_modulus": 0.6,
+          "flexibility_score": 0.663,
+          "water_resistance": 0.788,
+          "acid_resistance": 0.663,
+          "base_resistance": 0.823,
+          "solvent_resistance": 0.708,
+          "uv_stability": 4902.0,
+          "oxygen_permeability": 40.0,
+          "moisture_vapor_transmission": 18.2,
+          "biodegradability": 0.25,
+          "hydrophane_opal_compatibility": 0.751,
+          "pyrite_compatibility": 0.501,
+          "fossil_compatibility": 0.768,
+          "meteorite_compatibility": 0.519,
+          "analysis_time": 1.403,
+          "confidence_score": 0.839
+        },
+        "timestamp": "2025-09-23T08:21:16.874683",
+        "processing_time_seconds": 0.0
+      },
+      "properties_count": 22,
+      "processing_time": 0.0
+    },
+    "single_predict_smiles_4_CCc1ccccc1": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.879141",
+      "smiles": "CC(c1ccccc1)",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 733,
+      "response_data": {
+        "polymer_id": "POLY-HFLAKRBG",
+        "smiles": "CC(c1ccccc1)",
+        "properties": {
+          "glass_transition_temp": 94.5,
+          "melting_temp": 194.8,
+          "decomposition_temp": 254.7,
+          "thermal_stability_score": 0.798,
+          "tensile_strength": 68.9,
+          "elongation_at_break": 113.1,
+          "youngs_modulus": 3.1,
+          "flexibility_score": 0.615,
+          "water_resistance": 0.637,
+          "acid_resistance": 0.869,
+          "base_resistance": 0.561,
+          "solvent_resistance": 0.72,
+          "uv_stability": 6865.0,
+          "oxygen_permeability": 54.3,
+          "moisture_vapor_transmission": 12.7,
+          "biodegradability": 0.216,
+          "hydrophane_opal_compatibility": 0.755,
+          "pyrite_compatibility": 0.829,
+          "fossil_compatibility": 0.706,
+          "meteorite_compatibility": 0.533,
+          "analysis_time": 0.887,
+          "confidence_score": 0.762
+        },
+        "timestamp": "2025-09-23T08:21:16.878139",
+        "processing_time_seconds": 0.001
+      },
+      "properties_count": 22,
+      "processing_time": 0.001
+    },
+    "single_predict_smiles_5_CC_OOC1_CC_CC_C1C_OO": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.881960",
+      "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 743,
+      "response_data": {
+        "polymer_id": "POLY-HGLCW8XK",
+        "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
+        "properties": {
+          "glass_transition_temp": 101.8,
+          "melting_temp": 138.8,
+          "decomposition_temp": 294.9,
+          "thermal_stability_score": 0.683,
+          "tensile_strength": 71.7,
+          "elongation_at_break": 84.6,
+          "youngs_modulus": 1.7,
+          "flexibility_score": 0.85,
+          "water_resistance": 0.826,
+          "acid_resistance": 0.718,
+          "base_resistance": 0.828,
+          "solvent_resistance": 0.745,
+          "uv_stability": 5273.0,
+          "oxygen_permeability": 16.4,
+          "moisture_vapor_transmission": 9.6,
+          "biodegradability": 0.264,
+          "hydrophane_opal_compatibility": 0.642,
+          "pyrite_compatibility": 0.68,
+          "fossil_compatibility": 0.702,
+          "meteorite_compatibility": 0.731,
+          "analysis_time": 2.016,
+          "confidence_score": 0.693
+        },
+        "timestamp": "2025-09-23T08:21:16.880912",
+        "processing_time_seconds": 0.001
+      },
+      "properties_count": 22,
+      "processing_time": 0.001
+    },
+    "batch_predict": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.886009",
+      "batch_size": 5,
+      "status_code": 200,
+      "response_time": 0.004,
+      "response_size": 3656,
+      "response_data": {
+        "results": [
+          {
+            "polymer_id": "POLY-JE858527",
+            "smiles": "CCO",
+            "properties": {
+              "glass_transition_temp": 108.2,
+              "melting_temp": 217.3,
+              "decomposition_temp": 316.7,
+              "thermal_stability_score": 0.913,
+              "tensile_strength": 45.9,
+              "elongation_at_break": 184.7,
+              "youngs_modulus": 2.0,
+              "flexibility_score": 0.673,
+              "water_resistance": 0.737,
+              "acid_resistance": 0.861,
+              "base_resistance": 0.7,
+              "solvent_resistance": 0.508,
+              "uv_stability": 4878.0,
+              "oxygen_permeability": 52.4,
+              "moisture_vapor_transmission": 13.9,
+              "biodegradability": 0.383,
+              "hydrophane_opal_compatibility": 0.898,
+              "pyrite_compatibility": 0.612,
+              "fossil_compatibility": 0.756,
+              "meteorite_compatibility": 0.84,
+              "analysis_time": 1.534,
+              "confidence_score": 0.901
+            },
+            "timestamp": "2025-09-23T08:21:16.883950"
+          },
+          {
+            "polymer_id": "POLY-GOKS6SUQ",
+            "smiles": "CC(C)(C)OC(=O)C=C",
+            "properties": {
+              "glass_transition_temp": 106.8,
+              "melting_temp": 145.7,
+              "decomposition_temp": 289.2,
+              "thermal_stability_score": 0.887,
+              "tensile_strength": 35.0,
+              "elongation_at_break": 140.0,
+              "youngs_modulus": 2.6,
+              "flexibility_score": 0.483,
+              "water_resistance": 0.684,
+              "acid_resistance": 0.793,
+              "base_resistance": 0.834,
+              "solvent_resistance": 0.735,
+              "uv_stability": 5226.0,
+              "oxygen_permeability": 63.3,
+              "moisture_vapor_transmission": 19.8,
+              "biodegradability": 0.259,
+              "hydrophane_opal_compatibility": 0.671,
+              "pyrite_compatibility": 0.763,
+              "fossil_compatibility": 0.727,
+              "meteorite_compatibility": 0.819,
+              "analysis_time": 2.025,
+              "confidence_score": 0.895
+            },
+            "timestamp": "2025-09-23T08:21:16.884308"
+          },
+          {
+            "polymer_id": "POLY-ADI7J8YV",
+            "smiles": "CC=C(C)C(=O)OC",
+            "properties": {
+              "glass_transition_temp": 75.5,
+              "melting_temp": 170.1,
+              "decomposition_temp": 242.2,
+              "thermal_stability_score": 0.82,
+              "tensile_strength": 67.0,
+              "elongation_at_break": 176.7,
+              "youngs_modulus": 1.5,
+              "flexibility_score": 0.633,
+              "water_resistance": 0.665,
+              "acid_resistance": 0.503,
+              "base_resistance": 0.596,
+              "solvent_resistance": 0.699,
+              "uv_stability": 5362.0,
+              "oxygen_permeability": 59.5,
+              "moisture_vapor_transmission": 18.7,
+              "biodegradability": 0.129,
+              "hydrophane_opal_compatibility": 0.898,
+              "pyrite_compatibility": 0.611,
+              "fossil_compatibility": 0.837,
+              "meteorite_compatibility": 0.6,
+              "analysis_time": 1.273,
+              "confidence_score": 0.775
+            },
+            "timestamp": "2025-09-23T08:21:16.884579"
+          },
+          {
+            "polymer_id": "POLY-NG25D73B",
+            "smiles": "CC(c1ccccc1)",
+            "properties": {
+              "glass_transition_temp": 107.0,
+              "melting_temp": 151.8,
+              "decomposition_temp": 313.6,
+              "thermal_stability_score": 0.928,
+              "tensile_strength": 33.7,
+              "elongation_at_break": 175.1,
+              "youngs_modulus": 3.0,
+              "flexibility_score": 0.462,
+              "water_resistance": 0.651,
+              "acid_resistance": 0.791,
+              "base_resistance": 0.832,
+              "solvent_resistance": 0.701,
+              "uv_stability": 5496.0,
+              "oxygen_permeability": 91.2,
+              "moisture_vapor_transmission": 15.1,
+              "biodegradability": 0.253,
+              "hydrophane_opal_compatibility": 0.538,
+              "pyrite_compatibility": 0.875,
+              "fossil_compatibility": 0.902,
+              "meteorite_compatibility": 0.587,
+              "analysis_time": 0.925,
+              "confidence_score": 0.919
+            },
+            "timestamp": "2025-09-23T08:21:16.884823"
+          },
+          {
+            "polymer_id": "POLY-PNTIB95N",
+            "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
+            "properties": {
+              "glass_transition_temp": 85.9,
+              "melting_temp": 175.9,
+              "decomposition_temp": 243.9,
+              "thermal_stability_score": 0.743,
+              "tensile_strength": 34.1,
+              "elongation_at_break": 95.8,
+              "youngs_modulus": -0.1,
+              "flexibility_score": 0.852,
+              "water_resistance": 0.777,
+              "acid_resistance": 0.521,
+              "base_resistance": 0.849,
+              "solvent_resistance": 0.511,
+              "uv_stability": 3371.0,
+              "oxygen_permeability": 50.0,
+              "moisture_vapor_transmission": 10.5,
+              "biodegradability": 0.413,
+              "hydrophane_opal_compatibility": 0.914,
+              "pyrite_compatibility": 0.708,
+              "fossil_compatibility": 0.881,
+              "meteorite_compatibility": 0.713,
+              "analysis_time": 1.955,
+              "confidence_score": 0.849
+            },
+            "timestamp": "2025-09-23T08:21:16.885065"
+          }
+        ],
+        "summary": {
+          "total": 5,
+          "successful": 5,
+          "failed": 0,
+          "processing_time_seconds": 0.002
+        },
+        "timestamp": "2025-09-23T08:21:16.885087"
+      },
+      "successful_results": 5,
+      "failed_results": 0,
+      "summary_match": true
+    },
+    "error_handling_invalid_1_": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.888043",
+      "invalid_input": "",
+      "status_code": 400,
+      "response_time": 0.002,
+      "error_response": {
+        "error": "Missing 'smiles' field in request body",
+        "error_code": "MISSING_SMILES",
+        "timestamp": "2025-09-23T08:21:16.887288"
+      }
+    },
+    "error_handling_invalid_2_INVALID": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.890572",
+      "invalid_input": "INVALID",
+      "status_code": 400,
+      "response_time": 0.002,
+      "error_response": {
+        "error": "Invalid SMILES: Invalid SMILES string - could not be parsed",
+        "error_code": "INVALID_SMILES",
+        "polymer_id": null,
+        "smiles": "INVALID",
+        "properties": {},
+        "timestamp": "2025-09-23T08:21:16.889801",
+        "processing_time_seconds": 0.001
+      }
+    },
+    "error_handling_invalid_3_C1CC1<>": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.893066",
+      "invalid_input": "C1CC1<>",
+      "status_code": 400,
+      "response_time": 0.002,
+      "error_response": {
+        "error": "Invalid SMILES: SMILES contains invalid characters",
+        "error_code": "INVALID_SMILES",
+        "polymer_id": null,
+        "smiles": "C1CC1<>",
+        "properties": {},
+        "timestamp": "2025-09-23T08:21:16.892127",
+        "processing_time_seconds": 0.0
+      }
+    },
+    "error_handling_invalid_4_None": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.895451",
+      "invalid_input": "None",
+      "status_code": 400,
+      "response_time": 0.002,
+      "error_response": {
+        "error": "Missing 'smiles' field in request body",
+        "error_code": "MISSING_SMILES",
+        "timestamp": "2025-09-23T08:21:16.894675"
+      }
+    },
+    "error_handling_invalid_5_123": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.898972",
+      "invalid_input": "123",
+      "status_code": 400,
+      "response_time": 0.003,
+      "error_response": {
+        "error": "'smiles' field must be a string",
+        "error_code": "INVALID_SMILES_TYPE",
+        "timestamp": "2025-09-23T08:21:16.897311"
+      }
+    },
+    "metrics_endpoint": {
+      "success": true,
+      "timestamp": "2025-09-23T08:21:16.901972",
+      "status_code": 200,
+      "response_time": 0.003,
+      "response_size": 163,
+      "metrics_data": {
+        "predictions_total": 0,
+        "predictions_success": 0,
+        "predictions_failed": 0,
+        "average_response_time": 1.2,
+        "uptime_seconds": 0.0,
+        "memory_usage_mb": 0.0,
+        "gpu_utilization": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total_tests": 13,
+    "passed_tests": 13,
+    "failed_tests": 0,
+    "success_rate": 100.0,
+    "test_duration": null
+  }
+}
