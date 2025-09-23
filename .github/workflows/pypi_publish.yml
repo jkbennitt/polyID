@@ -19,10 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  # test:
-    # put test stuff here. see https://github.com/NREL/alfabet/blob/master/.github/workflows/run_tests_and_deploy.yml
   release:
-    # needs: test
     if: startsWith(github.ref, 'refs/tags') #for publishing new tags
     runs-on: ubuntu-latest
     strategy:
@@ -30,9 +27,9 @@ jobs:
         python-version: [ 3.8 ]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -46,13 +43,43 @@ jobs:
         python -m pip install twine
 
     # Upload to PyPI
-    - name: Build and Upload to PyPI
-      run: python3 setup.py sdist bdist_wheel
+    - name: Build package
+      run: python3 -m build
+
     - name: Check the package
       run: twine check dist/*
-    - name: Push to TestPyPI
+
+    - name: Push to PyPI
       run: python3 -m twine upload dist/*
       env:
-        STACKMANAGER_VERSION: ${{ github.event.release.tag_name }}
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+    - name: Create release notes
+      if: success()
+      run: |
+        echo "Successfully published polyID ${{ steps.tag.outputs.version }} to PyPI" >> release_notes.txt
+
+    - name: Upload release artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: pypi-publish-logs-${{ github.run_id }}
+        path: |
+          release_notes.txt
+          dist/
+        retention-days: 30
+
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "PyPI publish failed for version ${{ steps.tag.outputs.version }}" >> failure_log.txt
+        echo "Check artifacts for detailed logs" >> failure_log.txt
+
+    - name: Upload failure logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: pypi-publish-failure-${{ github.run_id }}
+        path: failure_log.txt
+        retention-days: 7

@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache conda
+      uses: actions/cache@v3
+      with:
+        path: ~/conda_pkgs_dir
+        key: conda-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('environment.yml') }}
+
+    - name: Setup conda environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        environment-file: environment.yml
+        activate-environment: polyid
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install package
+      run: |
+        pip install -e .
+
+    - name: Run linting
+      run: |
+        pip install flake8 black isort
+        flake8 polyid/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 polyid/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        black --check polyid/
+        isort --check-only polyid/
+
+    - name: Run tests
+      run: |
+        pip install pytest pytest-cov
+        pytest --cov=polyid --cov-report=xml --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results-${{ matrix.python-version }}
+        path: |
+          *.xml
+          test-results/
+        retention-days: 30
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Setup conda environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        environment-file: environment.yml
+        activate-environment: polyid
+
+    - name: Build package
+      run: |
+        pip install build
+        python -m build
+
+    - name: Check package
+      run: |
+        pip install twine
+        twine check dist/*
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+        retention-days: 30

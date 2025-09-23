@@ -53,7 +53,35 @@ jobs:
     - name: Push to TestPyPI
       run: python3 -m twine upload dist/*
       env:
-        STACKMANAGER_VERSION: ${{ github.event.release.tag_name }}
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TEST_TOKEN }}
         TWINE_REPOSITORY: testpypi
+
+    - name: Create release notes
+      if: success()
+      run: |
+        echo "Successfully published polyID ${{ steps.tag.outputs.version }} to TestPyPI" >> test_release_notes.txt
+
+    - name: Upload release artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: testpypi-publish-logs-${{ github.run_id }}
+        path: |
+          test_release_notes.txt
+          dist/
+        retention-days: 30
+
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "TestPyPI publish failed for version ${{ steps.tag.outputs.version }}" >> test_failure_log.txt
+        echo "Check artifacts for detailed logs" >> test_failure_log.txt
+
+    - name: Upload failure logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: testpypi-publish-failure-${{ github.run_id }}
+        path: test_failure_log.txt
+        retention-days: 7
