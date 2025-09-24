@@ -1,36 +1,64 @@
-# PolyID-PaleoBond Integration: Complete Documentation
+# PolyID-PaleoBond Integration: Technical Documentation
 
-**Version**: 1.0.0  
-**Date**: September 23, 2025  
-**Status**: Production Ready  
-**Test Success Rate**: 100%
+**Version**: 1.1.0
+**Date**: September 24, 2025
+**Status**: API Ready - Model Training Required
+**Prediction Mode**: Mock (Training Data Required for Real Predictions)
 
 ---
 
 ## Executive Summary
 
-The PolyID-PaleoBond integration has been **successfully completed** and is ready for production deployment. This comprehensive integration enables PaleoBond's molecular generation platform to leverage PolyID's polymer property prediction capabilities for preservation formulation development.
+The PolyID-PaleoBond API integration infrastructure is **complete and functional**. The system provides a production-ready API with all required endpoints and PaleoBond-compatible response formats. **Currently operating in mock prediction mode** pending availability of trained PolyID models.
 
-### Key Accomplishments
+### Implementation Status
 
-✅ **API Integration Complete**: Fixed all 404 API endpoint errors with proper FastAPI implementation  
-✅ **Response Format Compliance**: Implemented complete 22-property response format matching PaleoBond requirements  
-✅ **Batch Processing**: Added efficient batch processing for multiple SMILES analysis  
-✅ **Monitoring & Health**: Implemented health check and metrics endpoints for production monitoring  
-✅ **Error Handling**: Comprehensive error handling with proper HTTP status codes and detailed messages  
-✅ **Testing Excellence**: Achieved 100% test success rate across all 13 comprehensive test scenarios  
-✅ **Performance Optimization**: Fast response times with proper timestamp tracking and processing metrics  
+✅ **API Infrastructure Complete**: All 4 FastAPI endpoints properly implemented and tested
+✅ **Response Format Compliance**: Complete 22-property response format matching PaleoBond requirements
+✅ **Batch Processing**: Efficient batch processing for up to 100 polymers per request
+✅ **Monitoring & Health**: Health check and metrics endpoints for production monitoring
+✅ **Error Handling**: Comprehensive error handling with proper HTTP status codes
+✅ **Real Prediction Pipeline**: Model loading and prediction pipeline implemented
+⚠️ **Prediction Mode**: Using mock predictions (realistic values) until models are trained
 
 ### Current Status
 
-**PRODUCTION READY** - The integration is fully functional with all target requirements met:
+**API INFRASTRUCTURE READY** - All endpoints functional with mock predictions:
 
-- **Single Polymer Analysis**: ✅ Working (sub-second response times)
+- **Single Polymer Analysis**: ✅ Working (sub-second response times, mock predictions)
 - **Batch Processing**: ✅ Working (up to 100 polymers per request)
 - **Error Handling**: ✅ Working (proper HTTP status codes and detailed error messages)
 - **Health Monitoring**: ✅ Working (system health and component status tracking)
 - **Performance Metrics**: ✅ Working (comprehensive performance monitoring)
 - **PaleoBond Compatibility**: ✅ 100% Compatible (all 22 properties in correct format)
+
+### Model Training Requirement
+
+⚠️ **Important**: The system currently uses **mock predictions** with realistic but simulated property values. To enable **real PolyID predictions**, trained models must be provided:
+
+**Required Steps for Real Predictions:**
+1. Train PolyID models using the provided training notebooks in `examples/`
+2. Place trained models in `models/` directory with structure:
+   ```
+   models/
+   ├── parameters.pk
+   ├── model_0/
+   │   ├── model_0.h5
+   │   └── model_0_data.pk
+   ├── model_1/
+   │   ├── model_1.h5
+   │   └── model_1_data.pk
+   └── ...
+   ```
+3. Restart the application - it will automatically detect and load models
+4. Real predictions will map PolyID's native properties to PaleoBond's 22-property format
+
+**Mock Prediction Characteristics:**
+- Realistic value ranges based on polymer science principles
+- SMILES-based variation for reproducibility
+- Chemistry-aware adjustments (aromatic content, complexity)
+- Properly formatted responses matching PaleoBond specification
+- Suitable for API integration testing and development
 
 ---
 
@@ -228,16 +256,15 @@ The integration implements comprehensive error handling:
 
 ---
 
-## Testing Results: 100% Success Rate
+## Testing Results
 
 ### Comprehensive Test Summary
 
-**Test Date**: September 23, 2025  
-**Test Environment**: Local API server (localhost:7861)  
-**Total Tests**: 13  
-**Passed**: 13  
-**Failed**: 0  
-**Success Rate**: **100%**
+**Test Date**: September 24, 2025
+**Test Environment**: Local API server (localhost:7861)
+**Prediction Mode**: Mock predictions (no trained models)
+**Total Tests**: 13
+**Status**: All endpoints functional with mock predictions
 
 ### Test Categories and Results
 
