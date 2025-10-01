@@ -47,6 +47,14 @@ warnings.filterwarnings('ignore')
 # Create logger for this module
 logger = logging.getLogger(__name__)
 
+# Set environment variables for TensorFlow optimization and stability
+if 'OMP_NUM_THREADS' not in os.environ:
+    os.environ['OMP_NUM_THREADS'] = '1'
+if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+if 'TF_ENABLE_GPU_GARBAGE_COLLECTION' not in os.environ:
+    os.environ['TF_ENABLE_GPU_GARBAGE_COLLECTION'] = 'false'
+
 # Set up path for PolyID imports
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -104,6 +112,98 @@ SAMPLE_POLYMERS = {
     "Polyethylene terephthalate (PET)": "COC(=O)c1ccc(C(=O)O)cc1.OCCO",
     "Polycarbonate (PC)": "CC(C)(c1ccc(O)cc1)c1ccc(O)cc1.O=C(Cl)Cl",
 }
+
+def detailed_gpu_diagnostics() -> Dict:
+    """
+    Perform detailed GPU diagnostics and return comprehensive status
+
+    Returns:
+        Dictionary with GPU diagnostics information
+    """
+    diagnostics = {
+        "tensorflow_available": False,
+        "gpu_available": False,
+        "gpu_count": 0,
+        "gpu_devices": [],
+        "cuda_available": False,
+        "cudnn_available": False,
+        "memory_growth_set": False,
+        "errors": []
+    }
+
+    try:
+        import tensorflow as tf
+        diagnostics["tensorflow_available"] = True
+        diagnostics["tensorflow_version"] = tf.__version__
+
+        # Check CUDA and cuDNN
+        diagnostics["cuda_available"] = tf.test.is_built_with_cuda()
+        diagnostics["cudnn_available"] = tf.test.is_built_with_gpu_support()
+
+        # Get GPU devices
+        gpu_devices = tf.config.list_physical_devices('GPU')
+        diagnostics["gpu_count"] = len(gpu_devices)
+        diagnostics["gpu_devices"] = [str(dev) for dev in gpu_devices]
+        diagnostics["gpu_available"] = len(gpu_devices) > 0
+
+        # Check logical devices
+        logical_gpus = tf.config.list_logical_devices('GPU')
+        diagnostics["logical_gpu_count"] = len(logical_gpus)
+
+        # Test memory growth
+        if gpu_devices:
+            try:
+                for gpu in gpu_devices:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+                diagnostics["memory_growth_set"] = True
+            except Exception as e:
+                diagnostics["errors"].append(f"Memory growth setup failed: {str(e)}")
+
+    except ImportError:
+        diagnostics["errors"].append("TensorFlow not available")
+    except Exception as e:
+        diagnostics["errors"].append(f"GPU diagnostics error: {str(e)}")
+
+    return diagnostics
+
+def check_gpu_compatibility() -> bool:
+    """
+    Check GPU compatibility and configure TensorFlow for GPU usage
+
+    Returns:
+        True if GPU is available and configured, False otherwise
+    """
+    try:
+        import tensorflow as tf
+
+        gpu_devices = tf.config.list_physical_devices('GPU')
+        if not gpu_devices:
+            logger.info("No GPU devices found, falling back to CPU")
+            return False
+
+        logger.info(f"Found {len(gpu_devices)} GPU device(s)")
+
+        # Set memory growth for all GPUs
+        for gpu in gpu_devices:
+            try:
+                tf.config.experimental.set_memory_growth(gpu, True)
+                logger.info(f"Set memory growth for GPU: {gpu}")
+            except RuntimeError as e:
+                logger.warning(f"Could not set memory growth for GPU {gpu}: {e}")
+
+        # Verify GPU is accessible
+        with tf.device('/GPU:0'):
+            a = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+            b = tf.constant([[1.0, 0.0], [0.0, 1.0]])
+            c = tf.matmul(a, b)
+            logger.info("GPU test computation successful")
+
+        logger.info("GPU compatibility check passed")
+        return True
+
+    except Exception as e:
+        logger.warning(f"GPU compatibility check failed: {str(e)}")
+        return False
 
 def validate_smiles(smiles: str) -> Tuple[bool, str]:
     """
@@ -1287,6 +1387,22 @@ def run_startup_diagnostics():
     print("=" * 50)
     print("PolyID Hugging Face Spaces - Startup Diagnostics")
     print("=" * 50)
+
+    # Run GPU diagnostics early
+    gpu_diagnostics = detailed_gpu_diagnostics()
+    print(f"GPU Diagnostics Summary:")
+    print(f"  TensorFlow Available: {gpu_diagnostics['tensorflow_available']}")
+    print(f"  GPU Available: {gpu_diagnostics['gpu_available']}")
+    print(f"  GPU Count: {gpu_diagnostics['gpu_count']}")
+    if gpu_diagnostics['errors']:
+        print(f"  Errors: {gpu_diagnostics['errors']}")
+
+    # Check GPU compatibility and configure
+    gpu_compatible = check_gpu_compatibility()
+    if gpu_compatible:
+        print("[OK] GPU compatibility check passed - GPU acceleration enabled")
+    else:
+        print("[INFO] GPU not available or incompatible - using CPU fallback")
 
     # Python version
     print(f"Python Version: {sys.version}")
