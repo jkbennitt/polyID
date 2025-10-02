@@ -32,7 +32,7 @@ except ImportError:
 
 # Configure structured logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
@@ -48,12 +48,31 @@ warnings.filterwarnings('ignore')
 logger = logging.getLogger(__name__)
 
 # Set environment variables for TensorFlow optimization and stability
+logger.debug("Pre-import environment check")
+logger.debug(f"Pre-set OMP_NUM_THREADS: {os.environ.get('OMP_NUM_THREADS', 'not set')}")
 if 'OMP_NUM_THREADS' not in os.environ:
     os.environ['OMP_NUM_THREADS'] = '1'
+logger.debug(f"Post-set OMP_NUM_THREADS: {os.environ['OMP_NUM_THREADS']}")
 if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 if 'TF_ENABLE_GPU_GARBAGE_COLLECTION' not in os.environ:
     os.environ['TF_ENABLE_GPU_GARBAGE_COLLECTION'] = 'false'
+
+# Early GPU configuration before PolyID imports - after function definitions
+try:
+    import tensorflow as tf
+    logger.debug("TensorFlow imported for early GPU configuration")
+    # Run detailed GPU diagnostics
+    gpu_diagnostics = detailed_gpu_diagnostics()
+    logger.debug(f"GPU diagnostics completed: GPU available: {gpu_diagnostics['gpu_available']}, count: {gpu_diagnostics['gpu_count']}")
+    # Check GPU compatibility and configure
+    gpu_compatible = check_gpu_compatibility()
+    logger.debug(f"GPU compatibility check completed: {gpu_compatible}")
+except Exception as e:
+    logger.error(f"Early GPU configuration failed: {e}")
+    gpu_compatible = False
+
+logger.debug("Post-import device status check completed")
 
 # Set up path for PolyID imports
 sys.path.insert(0, os.path.dirname(__file__))
@@ -103,16 +122,14 @@ except ImportError as e:
         print(f"[FAIL] Complete PolyID import failed: {e2}")
         POLYID_AVAILABLE = False
 
-# Sample polymer SMILES for demonstration
-SAMPLE_POLYMERS = {
-    "Polyethylene (PE)": "CC",
-    "Polypropylene (PP)": "CC(C)",
-    "Polystyrene (PS)": "CC(c1ccccc1)",
-    "Poly(methyl methacrylate) (PMMA)": "CC(C)(C(=O)OC)",
-    "Polyethylene terephthalate (PET)": "COC(=O)c1ccc(C(=O)O)cc1.OCCO",
-    "Polycarbonate (PC)": "CC(C)(c1ccc(O)cc1)c1ccc(O)cc1.O=C(Cl)Cl",
-}
+except Exception as e:
+    logger.error(f"Critical error during PolyID import section: {e}")
+    POLYID_AVAILABLE = False
+    rdkit = None
+    nfp = None
+    shortuuid = None
 
+# GPU diagnostic functions (defined early for startup configuration)
 def detailed_gpu_diagnostics() -> Dict:
     """
     Perform detailed GPU diagnostics and return comprehensive status
@@ -184,12 +201,14 @@ def check_gpu_compatibility() -> bool:
         logger.info(f"Found {len(gpu_devices)} GPU device(s)")
 
         # Set memory growth for all GPUs
+        logger.debug("Before memory growth attempt")
         for gpu in gpu_devices:
             try:
                 tf.config.experimental.set_memory_growth(gpu, True)
                 logger.info(f"Set memory growth for GPU: {gpu}")
             except RuntimeError as e:
                 logger.warning(f"Could not set memory growth for GPU {gpu}: {e}")
+        logger.debug("After memory growth attempt")
 
         # Verify GPU is accessible
         with tf.device('/GPU:0'):
@@ -204,6 +223,15 @@ def check_gpu_compatibility() -> bool:
     except Exception as e:
         logger.warning(f"GPU compatibility check failed: {str(e)}")
         return False
+
+SAMPLE_POLYMERS = {
+    "Polyethylene (PE)": "CC",
+    "Polypropylene (PP)": "CC(C)",
+    "Polystyrene (PS)": "CC(c1ccccc1)",
+    "Poly(methyl methacrylate) (PMMA)": "CC(C)(C(=O)OC)",
+    "Polyethylene terephthalate (PET)": "COC(=O)c1ccc(C(=O)O)cc1.OCCO",
+    "Polycarbonate (PC)": "CC(C)(c1ccc(O)cc1)c1ccc(O)cc1.O=C(Cl)Cl",
+}
 
 def validate_smiles(smiles: str) -> Tuple[bool, str]:
     """
@@ -1480,7 +1508,10 @@ def run_startup_diagnostics():
 
 if __name__ == "__main__":
     # Run diagnostics
-    run_startup_diagnostics()
+    try:
+        run_startup_diagnostics()
+    except Exception as e:
+        logger.error(f"Startup diagnostics failed: {e}")
 
     # Create the Gradio interface
     demo = create_gradio_interface()

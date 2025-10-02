@@ -11,9 +11,9 @@ scikit-learn>=1.4.0
 matplotlib>=3.8.0
 seaborn>=0.13.0
 
-# Deep learning and neural networks - TensorFlow 2.16+ for current compatibility
-tensorflow>=2.16.0
-tensorflow-cpu>=2.16.0  # CPU fallback if GPU version unavailable
+# Deep learning and neural networks - TensorFlow 2.16.1 for strict compatibility
+tensorflow==2.16.1
+tensorflow-cpu==2.16.1  # CPU fallback if GPU version unavailable
 
 # Chemistry and molecular packages (essential for PolyID functionality)
 rdkit>=2023.9.1
