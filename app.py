@@ -47,27 +47,111 @@ warnings.filterwarnings('ignore')
 # Create logger for this module
 logger = logging.getLogger(__name__)
 
+# Enhanced environment diagnostics for HF Spaces debugging
+def comprehensive_environment_check():
+    """Comprehensive check of environment variables and system state"""
+    env_info = {
+        "omp_num_threads": os.environ.get('OMP_NUM_THREADS', 'not set'),
+        "tf_cpp_min_log_level": os.environ.get('TF_CPP_MIN_LOG_LEVEL', 'not set'),
+        "tf_enable_gpu_garbage_collection": os.environ.get('TF_ENABLE_GPU_GARBAGE_COLLECTION', 'not set'),
+        "cuda_visible_devices": os.environ.get('CUDA_VISIBLE_DEVICES', 'not set'),
+        "all_tf_vars": {k: v for k, v in os.environ.items() if k.startswith('TF_')},
+        "all_cuda_vars": {k: v for k, v in os.environ.items() if 'CUDA' in k.upper()},
+        "all_omp_vars": {k: v for k, v in os.environ.items() if 'OMP' in k.upper()},
+        "python_path": sys.path[:3],
+        "current_working_directory": os.getcwd(),
+        "available_memory": "unknown"
+    }
+
+    # Try to get memory info
+    try:
+        import psutil
+        process = psutil.Process()
+        env_info["available_memory"] = f"{process.memory_info().rss / 1024 / 1024:.1f} MB"
+    except:
+        pass
+
+    return env_info
+
+def monitor_environment_changes():
+    """Monitor for environment variable changes during execution"""
+    baseline_env = comprehensive_environment_check()
+
+    def check_for_changes():
+        current_env = comprehensive_environment_check()
+        changes = {}
+
+        # Check for changes in key variables
+        key_vars = ['OMP_NUM_THREADS', 'CUDA_VISIBLE_DEVICES', 'TF_CPP_MIN_LOG_LEVEL']
+        for var in key_vars:
+            baseline_val = baseline_env.get(var.lower(), 'not set')
+            current_val = current_env.get(var.lower(), 'not set')
+            if baseline_val != current_val:
+                changes[var] = {'from': baseline_val, 'to': current_val}
+
+        # Check for new TF/CUDA/OMP variables
+        for category in ['all_tf_vars', 'all_cuda_vars', 'all_omp_vars']:
+            baseline_sub = baseline_env.get(category, {})
+            current_sub = current_env.get(category, {})
+
+            # Check for new variables
+            for key in current_sub:
+                if key not in baseline_sub:
+                    changes[f"NEW_{category}:{key}"] = {'from': 'not set', 'to': current_sub[key]}
+
+            # Check for changed variables
+            for key in baseline_sub:
+                if key in current_sub and baseline_sub[key] != current_sub[key]:
+                    changes[f"CHANGED_{category}:{key}"] = {'from': baseline_sub[key], 'to': current_sub[key]}
+
+        if changes:
+            logger.warning(f"Environment changes detected: {changes}")
+            return changes
+        return None
+
+    return check_for_changes
+
 # Set environment variables for TensorFlow optimization and stability
+logger.debug("=== HF SPACES ENVIRONMENT DEBUGGING ===")
 logger.debug("Pre-import environment check")
+
+# Log comprehensive environment state
+env_check = comprehensive_environment_check()
+for key, value in env_check.items():
+    if isinstance(value, dict):
+        logger.debug(f"Pre-set {key}: {value}")
+    else:
+        logger.debug(f"Pre-set {key}: {value}")
+
 logger.debug(f"Pre-set OMP_NUM_THREADS: {os.environ.get('OMP_NUM_THREADS', 'not set')}")
 if 'OMP_NUM_THREADS' not in os.environ:
     os.environ['OMP_NUM_THREADS'] = '1'
+    logger.debug("Set OMP_NUM_THREADS to '1'")
 logger.debug(f"Post-set OMP_NUM_THREADS: {os.environ['OMP_NUM_THREADS']}")
+
 if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 if 'TF_ENABLE_GPU_GARBAGE_COLLECTION' not in os.environ:
     os.environ['TF_ENABLE_GPU_GARBAGE_COLLECTION'] = 'false'
 
+# Log environment again after setting variables
+logger.debug("Environment after setting TF variables:")
+for key in ['OMP_NUM_THREADS', 'TF_CPP_MIN_LOG_LEVEL', 'TF_ENABLE_GPU_GARBAGE_COLLECTION']:
+    logger.debug(f"  {key}: {os.environ.get(key, 'not set')}")
+
 # Early GPU configuration before PolyID imports - after function definitions
 try:
     import tensorflow as tf
     logger.debug("TensorFlow imported for early GPU configuration")
+
     # Run detailed GPU diagnostics
     gpu_diagnostics = detailed_gpu_diagnostics()
     logger.debug(f"GPU diagnostics completed: GPU available: {gpu_diagnostics['gpu_available']}, count: {gpu_diagnostics['gpu_count']}")
+
     # Check GPU compatibility and configure
     gpu_compatible = check_gpu_compatibility()
     logger.debug(f"GPU compatibility check completed: {gpu_compatible}")
+
 except Exception as e:
     logger.error(f"Early GPU configuration failed: {e}")
     gpu_compatible = False
@@ -1416,7 +1500,20 @@ def run_startup_diagnostics():
     print("PolyID Hugging Face Spaces - Startup Diagnostics")
     print("=" * 50)
 
+    # Log comprehensive environment state at startup
+    print("=== ENVIRONMENT STATE AT STARTUP ===")
+    env_check = comprehensive_environment_check()
+    for key, value in env_check.items():
+        if isinstance(value, dict):
+            print(f"{key}:")
+            for sub_key, sub_value in value.items():
+                print(f"  {sub_key}: {sub_value}")
+        else:
+            print(f"{key}: {value}")
+    print("=" * 50)
+
     # Run GPU diagnostics early
+    print("=== GPU DIAGNOSTICS ===")
     gpu_diagnostics = detailed_gpu_diagnostics()
     print(f"GPU Diagnostics Summary:")
     print(f"  TensorFlow Available: {gpu_diagnostics['tensorflow_available']}")
@@ -1472,10 +1569,11 @@ def run_startup_diagnostics():
         try:
             print(f"CUDA available: {tf.test.is_built_with_cuda()}")
             if tf.test.is_built_with_cuda():
-                print(f"CUDA version: {tf.sysconfig.get_build_info()['cuda_version']}")
-                print(f"cuDNN version: {tf.sysconfig.get_build_info()['cudnn_version']}")
-        except:
-            print("CUDA version info unavailable")
+                build_info = tf.sysconfig.get_build_info()
+                print(f"CUDA version: {build_info.get('cuda_version', 'unknown')}")
+                print(f"cuDNN version: {build_info.get('cudnn_version', 'unknown')}")
+        except Exception as e:
+            print(f"CUDA version info unavailable: {e}")
 
         # List all physical devices
         physical_devices = tf.config.list_physical_devices()
@@ -1501,15 +1599,29 @@ def run_startup_diagnostics():
 
         print("--- End GPU Diagnostics ---\n")
 
-    except ImportError:
-        print("TensorFlow: [FAIL] Not available")
+    except ImportError as e:
+        print(f"TensorFlow: [FAIL] Not available - {e}")
+    except Exception as e:
+        print(f"TensorFlow diagnostics failed: {e}")
 
     print("=" * 50)
 
 if __name__ == "__main__":
+    # Set up environment monitoring
+    check_env_changes = monitor_environment_changes()
+
     # Run diagnostics
     try:
         run_startup_diagnostics()
+
+        # Check for environment changes after diagnostics
+        print("=== POST-DIAGNOSTICS ENVIRONMENT CHECK ===")
+        changes = check_env_changes()
+        if changes:
+            print(f"Environment changes after diagnostics: {changes}")
+        else:
+            print("No environment changes detected after diagnostics")
+
     except Exception as e:
         logger.error(f"Startup diagnostics failed: {e}")
 
@@ -1525,6 +1637,24 @@ if __name__ == "__main__":
     print("[INFO] PaleoBond API routes added to Gradio app")
     print("[INFO] Gradio interface at /")
     print("[INFO] Endpoints: /run/predict (POST), /batch_predict (POST), /health (GET), /metrics (GET)")
+
+    # Final environment check before starting server
+    print("=== FINAL ENVIRONMENT CHECK BEFORE SERVER START ===")
+    final_env = comprehensive_environment_check()
+    for key, value in final_env.items():
+        if isinstance(value, dict):
+            print(f"{key}:")
+            for sub_key, sub_value in value.items():
+                print(f"  {sub_key}: {sub_value}")
+        else:
+            print(f"{key}: {value}")
+
+    # Check for any final changes
+    final_changes = check_env_changes()
+    if final_changes:
+        print(f"Final environment changes: {final_changes}")
+    else:
+        print("No final environment changes detected")
 
     # Run the Gradio app with uvicorn
     uvicorn.run(demo.app, host="0.0.0.0", port=7861)
